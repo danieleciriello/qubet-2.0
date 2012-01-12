@@ -47,18 +47,6 @@ Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Lev
     initGame();
 }
 
-Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, QObject *_parent, bool _audioEnabled, QGLShaderProgram *_explosionShader):
-    parent(_parent),
-    iconsList(_iconsList),
-    alphabet(_alphabet),
-    skin(_skin),
-    audioEnabled(_audioEnabled),
-    gameType(SURVIVOR_MODE),
-    explosionShader(_explosionShader)
-{
-    initGame();
-}
-
 Game::~Game()
 {
     this->disconnect(parent);
@@ -73,10 +61,7 @@ Game::~Game()
 
 void Game::startGame()
 {
-    if (gameType == STORY_MODE || gameType == ARCADE_MODE)
-        playLevel();
-    else
-        playInfiniteLevel();
+    playLevel();
 }
 
 void Game::draw(GLboolean simplifyForPicking)

@@ -683,7 +683,12 @@ void Qubet::playArcade(GLint skinId, GLint levelId)
 
 void Qubet::playSurvivor(GLint skinId)
 {
-    game = new Game(iconsList, alphabet, skinsList.value(skinId), this, audioManager->isAudioEnabled(), explosionShader);
+    aILevelFiller   = new AILevelFiller();
+    temporaryLevel  = new Level();
+    temporaryLevel->setGravity(5.0f);
+    aILevelFiller->createObstaclesList(temporaryLevel);
+
+    game = new Game(iconsList, alphabet, skinsList.value(skinId), temporaryLevel, this, audioManager->isAudioEnabled(), explosionShader);
 
     connectGame();
 

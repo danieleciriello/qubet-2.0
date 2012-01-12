@@ -41,8 +41,11 @@ Level::Level(QString _name, GLfloat _length, GLfloat _width, QObject *_parent, S
     isLoaded(false),
     asphaltSkin(_asphaltSkin)
 {
-    filename = name + ".xml";
-    filename.replace(" ", "_");
+    if(name != "")
+    {
+        filename = name + ".xml";
+        filename.replace(" ", "_");
+    }
 }
 
 Level::~Level()
@@ -111,11 +114,14 @@ QString Level::getSkyboxName()
     return skyboxName;
 }
 
-void Level::addObstacle(Obstacle *_obstacle)
+void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
 {
     GLint id = ++currentObstacleId;
     _obstacle->setId(id);
-    tempObstaclesList.insert(id, _obstacle);
+    if(inTemp)
+        tempObstaclesList.insert(id, _obstacle);
+    else
+        obstaclesList.insert(id, _obstacle);
 }
 
 void Level::deleteObstacle(GLint _id)

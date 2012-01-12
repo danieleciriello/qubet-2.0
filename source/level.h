@@ -22,6 +22,9 @@
 #include "obstacle.h"
 #include "skybox.h"
 
+#define STANDARD_LENGHT 450.0f
+#define STANDARD_WIDTH  15.0f
+
 /**
  * @brief This class rapresents a Level of Qubet, with its obstacle.
  *        It is able to draw itself simply using the draw function.
@@ -45,7 +48,7 @@ public:
      * @param _parent is the parent of the Level.
      * @param _asphaltSkin is the asphalt Skin for the Level.
     */
-    explicit Level(QString _name, GLfloat _length, GLfloat _width, QObject *_parent = 0, Skin *_asphaltSkin = NULL);
+    explicit Level(QString _name = "", GLfloat _length = STANDARD_LENGHT, GLfloat _width = STANDARD_WIDTH, QObject *_parent = 0, Skin *_asphaltSkin = NULL);
 
     /**
      * @brief Creates a Level from a filename.
@@ -143,8 +146,9 @@ public:
      * @brief Adds an obstacle to the Level.
      *
      * @param _obstacle is the obstacle to add.
+     * @param inTemp if is true, obstacle will be put in tempObstaclesList, else in obstaclesList.
      */
-    void addObstacle(Obstacle *_obstacle);
+    void addObstacle(Obstacle *_obstacle, bool inTemp = true);
 
     /**
      * @brief Deletes an obstacle.

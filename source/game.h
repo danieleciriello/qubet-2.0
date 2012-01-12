@@ -63,18 +63,6 @@ public:
     explicit Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent = 0, bool _audioEnabled = true, QGLShaderProgram *_explosionShader = NULL);
 
     /**
-     * @brief Cunstructor for the Arcade Mode.
-     *
-     * @param _iconsList is the reference to Qubet's iconsList.
-     * @param _alphabet is the reference to Qubet's alphabet.
-     * @param _skin is the Skin.
-     * @param _parent is the Game parent.
-     * @param _audioEnabled is the audioEnabled boolean value.
-     * @param _explosionShader is the shader for the explosion.
-     */
-    explicit Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, QObject *_parent = 0, bool _audioEnabled = true, QGLShaderProgram *_explosionShader = NULL);
-
-    /**
      * @brief Safely destroy a Game Object.
      */
     ~Game();

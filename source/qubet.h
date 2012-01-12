@@ -70,6 +70,7 @@
 #include "game.h"
 #include "audiomanager.h"
 #include "leveleditor.h"
+#include "ailevelfiller.h"
 
 /**
  * @brief This class rapresents an instance of the QGLWidget Qubet.
@@ -172,29 +173,31 @@ private:
 
     // Variables
 
-    GLint currentView; /**< It is used to keep track of the current view (menu, game, leveleditor). */
-    QString currentText; /**< It is the current string showed on the screen. */
-    QMap<GLint,Skin*> skinsList; /**< It is the QMap that contains ids and skin images. */
-    QMap<GLint,Level*> levelsList; /**< It is the QMap that contains ids and the names of level files. */
-    QMap<GLint,GLuint> iconsList; /**< It is the QMap that contains ids of the icons' texture. */
-    QMap<QString,Skybox*> skyboxesList; /**< It is the Qmap that contains the available skyboxes. */
-    QTimer *drawTimer; /**< It is the QTimer to re-draw the scene. */
-    Menu *menu; /**< It is the Menu pointer. */
-    Game *game; /**< It is the Game pointer. */
-    LevelEditor *levelEditor; /**< It is the LevelEditor pointer. */
-    AudioManager *audioManager; /**< It is the AudioManager pointer. */
-    Alphabet *alphabet; /**< It is the current Alphabet. */
-    Skybox *skybox; /**< It is the current Skybox. */
-    GLfloat skyboxAngle; /**< It is the Skybox rotation angle. */
-    QGLShaderProgram *explosionShader; /**< It is the current explosion Shader. */
-    Skin *asphaltSkin; /**< It is the asphalt Skin. */
+    GLint                   currentView;            /**< It is used to keep track of the current view (menu, game, leveleditor). */
+    QString                 currentText;            /**< It is the current string showed on the screen. */
+    QMap<GLint,Skin*>       skinsList;              /**< It is the QMap that contains ids and skin images. */
+    QMap<GLint,Level*>      levelsList;             /**< It is the QMap that contains ids and the names of level files. */
+    QMap<GLint,GLuint>      iconsList;              /**< It is the QMap that contains ids of the icons' texture. */
+    QMap<QString,Skybox*>   skyboxesList;           /**< It is the Qmap that contains the available skyboxes. */
+    QTimer                  *drawTimer;             /**< It is the QTimer to re-draw the scene. */
+    Menu                    *menu;                  /**< It is the Menu pointer. */
+    Game                    *game;                  /**< It is the Game pointer. */
+    LevelEditor             *levelEditor;           /**< It is the LevelEditor pointer. */
+    Level                   *temporaryLevel;        /**< TODO */
+    AudioManager            *audioManager;          /**< It is the AudioManager pointer. */
+    Alphabet                *alphabet;              /**< It is the current Alphabet. */
+    Skybox                  *skybox;                /**< It is the current Skybox. */
+    GLfloat                 skyboxAngle;            /**< It is the Skybox rotation angle. */
+    QGLShaderProgram        *explosionShader;       /**< It is the current explosion Shader. */
+    Skin                    *asphaltSkin;           /**< It is the asphalt Skin. */
 
-    GLint width; /**< It is the current widget width. */
-    GLint height; /**< It is the current widget height. */
-    GLint mouseMovedMode; /**< It is the variable that states which mouse mode is enabled. See the documentation of setMouseMovementTracking(int mode) for the available modes.*/
-    bool loadDone; /**< It is the variable that states if the load has already be done. */
-    GLint currentNewLevelNumber; /**< It is the current level value. */
+    GLint                   width;                  /**< It is the current widget width. */
+    GLint                   height;                 /**< It is the current widget height. */
+    GLint                   mouseMovedMode;         /**< It is the variable that states which mouse mode is enabled. See the documentation of setMouseMovementTracking(int mode) for the available modes.*/
+    bool                    loadDone;               /**< It is the variable that states if the load has already be done. */
+    GLint                   currentNewLevelNumber;  /**< It is the current level value. */
 
+    AILevelFiller           *aILevelFiller;         /**< TODO */
 
     // Initialization
 

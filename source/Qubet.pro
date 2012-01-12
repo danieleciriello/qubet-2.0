@@ -59,8 +59,7 @@ SOURCES += \
     cubestringlist.cpp \
     skybox.cpp \
     level.cpp \
-    automaticlevel.cpp \
-    artificialintelligence.cpp
+    ailevelfiller.cpp
 
 HEADERS  += \
     vector3f.h \
@@ -88,13 +87,26 @@ HEADERS  += \
     effects_defines.h \
     skybox.h \
     cube_defines.h \
-    automaticlevel.h \
-    artificialintelligence.h
+    ailevelfiller.h
 
 OTHER_FILES += \
    resources/skins/skins.xml \
    resources/sound/music/menu.wav \
    resources/levels/levels.xml \
    resources/icons/icons.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

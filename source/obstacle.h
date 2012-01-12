@@ -132,12 +132,12 @@ public:
 
 private:
 
-    GLint id; /**< It is the obstacle id. */
-    Vector3f *position; /**< It is the obstacle position. */
-    Vector3f *cell; /**< It is the obstacle cell position. */
-    QColor color; /**< It is the obstacle color. */
-    GLint modelId; /**< It is the obstacle modelId. */
-    GLint type; /**< It is the obstacle type value. */
+    GLint       id;         /**< It is the obstacle id. */
+    GLint       modelId;    /**< It is the obstacle modelId. */
+    GLint       type;       /**< It is the obstacle type value. */
+    Vector3f    *position;  /**< It is the obstacle position. */
+    Vector3f    *cell;      /**< It is the obstacle cell position. */
+    QColor      color;      /**< It is the obstacle color. */
 
 };
 
