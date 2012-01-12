@@ -204,18 +204,16 @@ void Game::draw(GLboolean simplifyForPicking)
             glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
 
             glPushMatrix();
-               glTranslatef(-((gameType == SURVIVOR_MODE ? automaticLevel->getWidth() : level->getWidth()) / 2.0f) + 1.5f, levelOffset->y + 1.5f, -1.5f);
+               glTranslatef(-(level->getWidth() / 2.0f) + 1.5f, levelOffset->y + 1.5f, -1.5f);
                cube->draw(simplifyForPicking);
             glPopMatrix();
 
             glTranslatef(levelOffset->x, levelOffset->y, levelOffset->z + cube->getZ());
 
-            (gameType == SURVIVOR_MODE ? automaticLevel->draw(simplifyForPicking) :
-                                         level->draw(simplifyForPicking));
+            level->draw(simplifyForPicking);
 
             glTranslatef(0.0f, 0.0f, -levelOffset->z - 6.0f);
-            drawPrism((gameType == SURVIVOR_MODE ? automaticLevel->getWidth() :
-                                                   level->getWidth()), LEVEL_HEIGHT, 12.0f, gridSkin);
+            drawPrism(level->getWidth(), LEVEL_HEIGHT, 12.0f, gridSkin);
 
             if (gameType != SURVIVOR_MODE)
             {
@@ -373,28 +371,6 @@ void Game::playLevel()
 
     cameraOffset = new Vector3f(-60.0, 0.0f, 4.0f);
     levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
-}
-
-void Game::playInfiniteLevel()
-{
-    automaticLevel = new AutomaticLevel(6.0f);
-
-    if (cube != NULL)
-        cube->~Cube();
-
-    cube = new Cube(automaticLevel->getTemporaryLevel(), skin, this, explosionShader);
-
-    if (positionController != NULL)
-        positionController->~PositionController();
-
-    positionController = new PositionController(cube, automaticLevel->getObstacleCells(), this);
-
-    positionController->startChecking();
-
-    introStep = 0;
-
-    cameraOffset = new Vector3f(-60.0, 0.0f, 4.0f);
-    levelOffset  = new Vector3f(0.0f, -4.0f, -(300.0f / 2.0f) - 12.0f);
 }
 
 void Game::nextLevel()
@@ -568,12 +544,6 @@ void Game::exploded()
 
 void Game::explosionFinished()
 {
-
-    if (gameType == SURVIVOR_MODE)
-    {
-        automaticLevel = new AutomaticLevel(6.0f);
-        positionController = new PositionController(cube, automaticLevel->getObstacleCells(), this);
-    }
     isExploding = false;
     positionController->startChecking();
 }

@@ -22,7 +22,6 @@
 #include "positioncontroller.h"
 #include "actionlist.h"
 #include "cubestring.h"
-#include "automaticlevel.h"
 
 /**
  * @brief It is the Game Class.
@@ -88,7 +87,6 @@ private:
     Alphabet *alphabet; /**< It is the alphabet provided by Qubet. */
     Skin *skin; /**< it is the cube skin pointer. */
     Level *level; /**< It is the current level pointer. */
-    AutomaticLevel *automaticLevel; /**< It is the automaticLevel pointer. */
     Level *next; /**< It is a pointer to the next Level. */
     QMap<GLint,Level*> levelsList; /**< It is the story levelList. */
     bool audioEnabled; /**< It is the audioEnabled boolean value. */

@@ -5,14 +5,14 @@
 #include "level.h"
 
 #define Y_MAX 6
-#define Z_GAP_MAX 15
+#define Z_GAP_MAX 10
 #define Z_GAP_MIN 3
 
 #define X_STATE_LEFT_EDGE               0x01
 #define X_STATE_RIGHT_EDGE              0x02
 
 /**
- * @brief
+ * @brief todo
  *
  */
 class AILevelFiller : public QObject
