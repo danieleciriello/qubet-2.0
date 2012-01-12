@@ -1,0 +1,4 @@
+Release/
+source/.hg/
+*.DS_Store
+Debug/
