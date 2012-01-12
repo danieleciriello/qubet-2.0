@@ -163,6 +163,12 @@ private:
      */
     void resetCube();
 
+    /**
+     * @brief todo
+     *
+     */
+    void halfReached();
+
 
 private slots:
 
@@ -185,6 +191,12 @@ signals:
      * @brief Signal emitted when the level is completed.
      */
     void levelCompleted();
+
+    /**
+     * @brief todo
+     *
+     */
+    void halfLevelReached();
 
     /**
      * @brief Signal emitted when the player "suicide" the Cube.

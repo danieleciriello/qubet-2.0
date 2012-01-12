@@ -34,14 +34,14 @@ Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, QMa
     initGame();
 }
 
-Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent, bool _audioEnabled, QGLShaderProgram *_explosionShader) :
+Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent, bool _audioEnabled, QGLShaderProgram *_explosionShader, GLint _gameType) :
     parent(_parent),
     iconsList(_iconsList),
     alphabet(_alphabet),
     skin(_skin),
     level(_level),
     audioEnabled(_audioEnabled),
-    gameType(ARCADE_MODE),
+    gameType(_gameType),
     explosionShader(_explosionShader)
 {
     initGame();
@@ -563,6 +563,11 @@ void Game::levelCompleted()
     {
         nextLevel();
     }
+}
+
+void Game::halfLevelReached()
+{
+    qDebug()<<"halflevel";
 }
 
 void Game::hideLevelName()

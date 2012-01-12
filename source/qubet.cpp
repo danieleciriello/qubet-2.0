@@ -688,7 +688,7 @@ void Qubet::playSurvivor(GLint skinId)
     temporaryLevel->setGravity(5.0f);
     aILevelFiller->createObstaclesList(temporaryLevel);
 
-    game = new Game(iconsList, alphabet, skinsList.value(skinId), temporaryLevel, this, audioManager->isAudioEnabled(), explosionShader);
+    game = new Game(iconsList, alphabet, skinsList.value(skinId), temporaryLevel, this, audioManager->isAudioEnabled(), explosionShader, SURVIVOR_MODE);
 
     connectGame();
 

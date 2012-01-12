@@ -22,6 +22,7 @@
 #include "positioncontroller.h"
 #include "actionlist.h"
 #include "cubestring.h"
+#include "defines.h"
 
 /**
  * @brief It is the Game Class.
@@ -59,7 +60,7 @@ public:
      * @param _audioEnabled is the audioEnabled boolean value.
      * @param _explosionShader is the shader for the explosion.
      */
-    explicit Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent = 0, bool _audioEnabled = true, QGLShaderProgram *_explosionShader = NULL);
+    explicit Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent = 0, bool _audioEnabled = true, QGLShaderProgram *_explosionShader = NULL,  GLint _gameType = ARCADE_MODE);
 
     /**
      * @brief Safely destroy a Game Object.
@@ -225,6 +226,12 @@ private slots:
      * @brief Slot invoked when level is completed.
      */
     void levelCompleted();
+
+    /**
+     * @brief todo
+     *
+     */
+    void halfLevelReached();
 
     /**
      * @brief Slot invoked to hide the Level Name.

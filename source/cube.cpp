@@ -36,6 +36,7 @@ Cube::Cube(Level *level, Skin *_skin, QObject *_parent, QGLShaderProgram *_explo
     connect(this,   SIGNAL(playEffect(QString)),          parent, SIGNAL(playEffect(QString)));
     connect(this,   SIGNAL(explosionFinished()),          parent, SLOT(explosionFinished()));
     connect(this,   SIGNAL(levelCompleted()),             parent, SLOT(levelCompleted()));
+    connect(this,   SIGNAL(halfLevelReached()),           parent, SLOT(halfLevelReached()));
     connect(this,   SIGNAL(suicide()),                    parent, SLOT(exploded()));
     connect(this,   SIGNAL(hideLevelName()),              parent, SLOT(hideLevelName()));
 
@@ -176,6 +177,8 @@ void Cube::updatePosition()
         completed();
         return;
     }
+    if (position->z >= (levelCellsLength * 3.0f + 18.0f)/2.0f)
+        halfReached();
 
     if (state & CUBESTATE_JUMPING)
     {
@@ -269,6 +272,11 @@ void Cube::completed()
 {
     canMove = false;
     emit levelCompleted();
+}
+
+void Cube::halfReached()
+{
+    emit halfLevelReached();
 }
 
 void Cube::resetCube()
