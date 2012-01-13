@@ -336,7 +336,8 @@ GLvoid Qubet::connectGame()
 {
     connectInputEvents(game);
 
-    connect(game, SIGNAL(gameClosedSignal()), this, SLOT(gameClosed()));
+    connect(game, SIGNAL(gameClosedSignal()),   this, SLOT(gameClosed()));
+    connect(game, SIGNAL(halfLevelReachedSig()),   this, SLOT(halfLevelReached()));
 
     connectAudio(game);
 }
@@ -713,6 +714,16 @@ void Qubet::gameClosed()
         game->~Game();
         game = NULL;
     }
+}
+
+void Qubet::halfLevelReached()
+{
+    //loop livello
+    temporaryLevel      = new Level();
+    temporaryLevel->setGravity(5.0f);
+    aILevelFiller->createObstaclesList(temporaryLevel);
+
+    game->setNextLevel(temporaryLevel);
 }
 
 void Qubet::showLevelEditor(GLint _levelId)

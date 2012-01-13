@@ -80,42 +80,51 @@ public:
      */
     void draw(GLboolean simplifyForPicking = false);
 
+    /**
+     * @brief todo
+     *
+     * @param _next
+     */
+    void setNextLevel(Level *_next);
+
 
 private:
 
-    QObject *parent; /**< It is the parent of a game Object. */
-    QMap<GLint,GLuint> iconsList;  /**< It is the iconsList provided by Qubet object. */
-    Alphabet *alphabet; /**< It is the alphabet provided by Qubet. */
-    Skin *skin; /**< it is the cube skin pointer. */
-    Level *level; /**< It is the current level pointer. */
-    Level *next; /**< It is a pointer to the next Level. */
-    QMap<GLint,Level*> levelsList; /**< It is the story levelList. */
-    bool audioEnabled; /**< It is the audioEnabled boolean value. */
-    Cube *cube; /**< It is the cube pointer. */
-    PositionController *positionController; /**< It is the positionController pointer. */
-    GLint gameType; /**< It is the game type value. */
-    GLint currentLevel; /**< It is the current level value. */
-    GLint deaths; /**< It is the death counter value. */
-    ActionList *currentActions; /**< It is the list of the current menu steps. */
-    GLfloat angleRotVolumeCube;  /**< It is the current rotation angle of the volume icon. */
-    Skin *volumeSkin; /**< It is the skin of the volume button. */
-    Skin *asphaltSkin; /**< It is the asphalt Skin. */
-    Skin *gridSkin; /**< It is the starting grid Skin. */
-    Vector3f *cameraOffset; /**< It is the camera offset for the editor. */
-    Vector3f *levelOffset; /**< It is the offset of the Level. */
-    CubeString *stateLabel;  /**< It is the state CubeString (used for Pause string, intro, ...). */
-    CubeString *quitLabel;  /**< It is the CubeString used in pause mode to back to the menu. */
-    GLuint introStep;  /**< It is the parameter for the introduction. */
-    bool isPaused; /**< It says if the game is paused or not. */
-    bool isExploding; /**< It says if the cube is exploding. */
-    CubeString *deathCounter; /**< It is the Death Counter CubeString. */
-    QGLShaderProgram *explosionShader; /**< It is the explosion Shader. */
-    bool isQuitting; /**< It is the variable that states if the game is quitting. */
-    bool showingResult;  /**< It is the variable that states if the game is showing results. */
-    CubeString *levelName; /**< It is the level name CubeString. */
-    CubeString *resultsCubeString; /**< It is the CubeString for the final results. */
-    CubeString *adjectiveCubeString; /**< It is the adjective CubeStinr. */
-    GLuint waitCounter; /**< It is the variable that sign the waiting time. */
+    QObject             *parent;                /**< It is the parent of a game Object. */
+    QMap<GLint,GLuint>  iconsList;              /**< It is the iconsList provided by Qubet object. */
+    Alphabet            *alphabet;              /**< It is the alphabet provided by Qubet. */
+    Skin                *skin;                  /**< it is the cube skin pointer. */
+    Level               *level;                 /**< It is the current level pointer. */
+    Level               *tempLevel;             /**< TODO */
+    Level               *next;                  /**< It is a pointer to the next Level. */
+    QMap<GLint,Level*>  levelsList;             /**< It is the story levelList. */
+    bool                audioEnabled;           /**< It is the audioEnabled boolean value. */
+    Cube                *cube;                  /**< It is the cube pointer. */
+    PositionController  *positionController;    /**< It is the positionController pointer. */
+    GLint               gameType;               /**< It is the game type value. */
+    GLint               currentLevel;           /**< It is the current level value. */
+    GLint               deaths;                 /**< It is the death counter value. */
+    ActionList          *currentActions;        /**< It is the list of the current menu steps. */
+    GLfloat             angleRotVolumeCube;     /**< It is the current rotation angle of the volume icon. */
+    Skin                *volumeSkin;            /**< It is the skin of the volume button. */
+    Skin                *asphaltSkin;           /**< It is the asphalt Skin. */
+    Skin                *gridSkin;              /**< It is the starting grid Skin. */
+    Vector3f            *cameraOffset;          /**< It is the camera offset for the editor. */
+    Vector3f            *levelOffset;           /**< It is the offset of the Level. */
+    CubeString          *stateLabel;            /**< It is the state CubeString (used for Pause string, intro, ...). */
+    CubeString          *quitLabel;             /**< It is the CubeString used in pause mode to back to the menu. */
+    GLuint              introStep;              /**< It is the parameter for the introduction. */
+    bool                isPaused;               /**< It says if the game is paused or not. */
+    bool                isExploding;            /**< It says if the cube is exploding. */
+    CubeString          *deathCounter;          /**< It is the Death Counter CubeString. */
+    QGLShaderProgram    *explosionShader;       /**< It is the explosion Shader. */
+    bool                isQuitting;             /**< It is the variable that states if the game is quitting. */
+    bool                showingResult;          /**< It is the variable that states if the game is showing results. */
+    CubeString          *levelName;             /**< It is the level name CubeString. */
+    CubeString          *resultsCubeString;     /**< It is the CubeString for the final results. */
+    CubeString          *adjectiveCubeString;   /**< It is the adjective CubeStinr. */
+    GLuint              waitCounter;            /**< It is the variable that sign the waiting time. */
+    bool                swap;                    /**< TODO */
 
     /**
      * @brief Initialize the game.
@@ -250,6 +259,12 @@ signals:
      * @brief Signal emitted to close the game.
      */
     void gameClosedSignal();
+
+    /**
+     * @brief todo
+     *
+     */
+    void halfLevelReachedSig();
 
     /**
      * @brief This signal is emitted to set the Qubet's Mouse Move Tracking sensibility.

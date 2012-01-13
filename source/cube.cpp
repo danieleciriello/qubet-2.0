@@ -24,7 +24,8 @@ Cube::Cube(Level *level, Skin *_skin, QObject *_parent, QGLShaderProgram *_explo
     skin(_skin),
     parent(_parent),
     position(new Vector3f()),
-    explosionShader(_explosionShader)
+    explosionShader(_explosionShader),
+    halfReachedSignaled(false)
 {
     canMove = false;
 
@@ -272,11 +273,16 @@ void Cube::completed()
 {
     canMove = false;
     emit levelCompleted();
+    halfReachedSignaled = true;
 }
 
 void Cube::halfReached()
 {
-    emit halfLevelReached();
+    if(!halfReachedSignaled)
+    {
+        emit halfLevelReached();
+        halfReachedSignaled = true;
+    }
 }
 
 void Cube::resetCube()

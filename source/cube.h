@@ -137,6 +137,7 @@ private:
     GLint startXCell; /**< It is the starting x cell. */
     bool canMove; /**< States if the cube can move or not. */
     QGLShaderProgram *explosionShader; /**< It is the explosion Shader. */
+    bool halfReachedSignaled;    /**< TODO */
 
     /**
      * @brief Generate the normalsMatrix Matrix.

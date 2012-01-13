@@ -184,6 +184,7 @@ private:
     Game                    *game;                  /**< It is the Game pointer. */
     LevelEditor             *levelEditor;           /**< It is the LevelEditor pointer. */
     Level                   *temporaryLevel;        /**< TODO */
+    Level                   *temporaryLevel2;       /**< TODO */
     AudioManager            *audioManager;          /**< It is the AudioManager pointer. */
     Alphabet                *alphabet;              /**< It is the current Alphabet. */
     Skybox                  *skybox;                /**< It is the current Skybox. */
@@ -393,6 +394,12 @@ private slots:
      *        the player chooses to close the current Game instance.
      */
     void gameClosed();
+
+    /**
+     * @brief todo
+     *
+     */
+    void halfLevelReached();
 
     /**
      * @brief This function is a slot linked to the Menu and invoked when

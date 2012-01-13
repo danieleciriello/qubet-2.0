@@ -40,9 +40,11 @@ Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Lev
     alphabet(_alphabet),
     skin(_skin),
     level(_level),
+    next(NULL),
     audioEnabled(_audioEnabled),
     gameType(_gameType),
-    explosionShader(_explosionShader)
+    explosionShader(_explosionShader),
+    swap(false)
 {
     initGame();
 }
@@ -203,6 +205,13 @@ void Game::draw(GLboolean simplifyForPicking)
 
             glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
 
+            if(swap)
+            {qDebug()<<"hff\n";
+                swap = false;
+                glTranslatef( 0.0f, 0.0f, level->getLength());
+                cube->setPosition(new Vector3f(0.0f, levelOffset->y + 1.5f, 3.0f));
+            }
+
             glPushMatrix();
                glTranslatef(-(level->getWidth() / 2.0f) + 1.5f, levelOffset->y + 1.5f, -1.5f);
                cube->draw(simplifyForPicking);
@@ -211,6 +220,15 @@ void Game::draw(GLboolean simplifyForPicking)
             glTranslatef(levelOffset->x, levelOffset->y, levelOffset->z + cube->getZ());
 
             level->draw(simplifyForPicking);
+            if(next != NULL && gameType == SURVIVOR_MODE)
+            {
+                qDebug()<<"heh\n";
+                glPushMatrix();
+                glTranslatef( 0, 0, next->getLength() + levelOffset->z + cube->getZ());
+                    next->draw(simplifyForPicking);
+                glPopMatrix();
+                qDebug()<<"neheh\n";
+            }
 
             glTranslatef(0.0f, 0.0f, -levelOffset->z - 6.0f);
             drawPrism(level->getWidth(), LEVEL_HEIGHT, 12.0f, gridSkin);
@@ -315,6 +333,11 @@ void Game::countdown()
     }
 
     introStep++;
+}
+
+void Game::setNextLevel(Level *_next)
+{
+    next = _next;
 }
 
 void Game::continueCountdown()
@@ -544,16 +567,7 @@ void Game::exploded()
 
 void Game::explosionFinished()
 {
-    isExploding = false;
-    positionController->startChecking();
-}
-
-void Game::levelCompleted()
-{
-    positionController->~PositionController();
-    positionController = NULL;
-
-    if (gameType == ARCADE_MODE)
+    if (gameType == SURVIVOR_MODE)
     {
         emit stopAmbientMusic();
         playEffect(EFFECT_STAGECLEAR);
@@ -561,13 +575,41 @@ void Game::levelCompleted()
     }
     else
     {
-        nextLevel();
+        isExploding = false;
+        positionController->startChecking();
+    }
+}
+
+void Game::levelCompleted()
+{
+    if(gameType != SURVIVOR_MODE)
+    {
+        positionController->~PositionController();
+        positionController = NULL;
+
+        if (gameType == ARCADE_MODE)
+        {
+            emit stopAmbientMusic();
+            playEffect(EFFECT_STAGECLEAR);
+            createResultStrings();
+        }
+        else
+        {
+            nextLevel();
+        }
+    }
+    else
+    {
+        level       = next;
+        next        = NULL;
+        swap = true;
     }
 }
 
 void Game::halfLevelReached()
 {
-    qDebug()<<"halflevel";
+
+    emit halfLevelReachedSig();
 }
 
 void Game::hideLevelName()

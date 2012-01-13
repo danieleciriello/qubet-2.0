@@ -19,64 +19,89 @@ void AILevelFiller::createObstaclesList(Level *_level)
 
 void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 {
-    if (_currentZ >= (int)(level->getLength() / 3.0f))
+    int levelLength     = (int)(level->getLength() / 3.0f);
+    if (_currentZ >= levelLength)
         return;
 
-    int currentTempX    = _currentX;
-    int currentTempY    = _currentY;
-    int currentTempZ    = _currentZ;
-    int zGap            = updateZGap();
+    int levelWidth          = (int)(level->getWidth() / 3.0f);
+    int currentTempX        = _currentX;
+    int currentTempY        = _currentY;
+    int currentTempZ        = _currentZ;
+    int zGap                = updateZGap();
+    int nextObstacleZ       = currentTempZ + zGap + 1;
+    int difficultyPercent   = (int)(difficulty * 100);
     qDebug()<<"xgap: " + QString::number(zGap) + "\n";
     checkXState(currentTempX);
 
     if(difficulty <= 1.0f)
-        difficulty += 0.002f;
+        difficulty += 0.02f;
 
     qDebug()<< difficulty;
-    if(qrand() % 100 < (int)(difficulty * 100))
+    if(qrand() % 100 < difficultyPercent)
     {
         if( xState & X_STATE_LEFT_EDGE )
         {
             if( xState & X_STATE_RIGHT_EDGE )
             {
-                addObstacles(currentTempX, currentTempY, (currentTempZ + zGap + 1));
+                addObstacles(currentTempX, currentTempY, nextObstacleZ);
             }
             else
             {
-                for (int i = 1; i < (int)(level->getWidth() / 3.0f); i++)
-                    for (int j = currentTempZ; j < (currentTempZ + zGap +1); j++)
-                        if( qrand() % 100 < difficulty)
+                for (int i = 2; i < levelWidth; i++)
+
+                    for (int j = currentTempZ; j < nextObstacleZ; j++)
+
+                        if((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+
                             createAndAddObstacle(i, currentTempY, j);
 
-                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
-                addObstacles((++currentTempX), currentTempY, (currentTempZ + zGap + 1));
+                if(nextObstacleZ < levelLength)
+
+                    createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
+
+                addObstacles((++currentTempX), currentTempY, nextObstacleZ);
             }
         }
         else if( xState & X_STATE_RIGHT_EDGE )
         {
-            for (int i = (int)(level->getWidth() / 3.0f) -1; i >= 0; i--)
-                for (int j = currentTempZ; j < (currentTempZ + zGap +1); j++)
-                    if( qrand() % 100 < difficulty)
+            for (int i = levelWidth -2; i >= 0; i--)
+
+                for (int j = currentTempZ; j < nextObstacleZ; j++)
+
+                    if ((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+
                         createAndAddObstacle(i, currentTempY, j);
 
-            createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
-            addObstacles((--currentTempX), currentTempY, (currentTempZ + zGap + 1));
+            if(nextObstacleZ < levelLength)
+
+                createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
+
+            addObstacles((--currentTempX), currentTempY, nextObstacleZ);
         }
         else
         {
-            for (int i = 0; i < currentTempX -1; i++)
-                for (int j = currentTempZ; j < (currentTempZ + zGap +1); j++)
-                    if( qrand() % 100 < difficulty)
+            for (int i = 0; i < currentTempX -2; i++)
+
+                for (int j = currentTempZ; j < nextObstacleZ; j++)
+
+                    if((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+
                         createAndAddObstacle(i, currentTempY, j);
 
-            for (int i = currentTempX +1; i < (int)(level->getWidth() / 3.0f); i++)
-                for (int j = currentTempZ; j < (currentTempZ + zGap +1); j++)
-                    if( qrand() % 100 < difficulty)
+            for (int i = currentTempX +2; i < levelWidth; i++)
+
+                for (int j = currentTempZ; j < nextObstacleZ; j++)
+
+                    if ((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+
                         createAndAddObstacle(i, currentTempY, j);
 
-            createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
-            qrand() % 100 < 50 ? addObstacles((++currentTempX), currentTempY, (currentTempZ + zGap + 1)):
-                                 addObstacles((--currentTempX), currentTempY, (currentTempZ + zGap + 1));
+            if(nextObstacleZ < levelLength)
+
+                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
+
+            qrand() % 100 < 50 ? addObstacles((++currentTempX), currentTempY, nextObstacleZ):
+                                 addObstacles((--currentTempX), currentTempY, nextObstacleZ);
         }
     }
     else
