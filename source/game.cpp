@@ -209,7 +209,8 @@ void Game::draw(GLboolean simplifyForPicking)
             {qDebug()<<"hff\n";
                 swap = false;
                 glTranslatef( 0.0f, 0.0f, level->getLength());
-                cube->setPosition(new Vector3f(0.0f, levelOffset->y + 1.5f, 3.0f));
+                //cube->setPosition(new Vector3f(0.0f, levelOffset->y + 1.5f, 3.0f));
+            //aggiungere cube translatez
             }
 
             glPushMatrix();
@@ -222,12 +223,10 @@ void Game::draw(GLboolean simplifyForPicking)
             level->draw(simplifyForPicking);
             if(next != NULL && gameType == SURVIVOR_MODE)
             {
-                qDebug()<<"heh\n";
                 glPushMatrix();
                 glTranslatef( 0, 0, next->getLength() + levelOffset->z + cube->getZ());
                     next->draw(simplifyForPicking);
                 glPopMatrix();
-                qDebug()<<"neheh\n";
             }
 
             glTranslatef(0.0f, 0.0f, -levelOffset->z - 6.0f);
