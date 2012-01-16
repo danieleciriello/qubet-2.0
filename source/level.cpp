@@ -26,7 +26,8 @@ Level::Level(QString _filename, QObject *_parent, Skin *_asphaltSkin) :
     filename(_filename),
     currentObstacleId(0),
     isLoaded(false),
-    asphaltSkin(_asphaltSkin)
+    asphaltSkin(_asphaltSkin),
+    skyboxName("nebula")
 {
     name = "not yet loaded";
 }
@@ -39,7 +40,8 @@ Level::Level(QString _name, GLfloat _length, GLfloat _width, QObject *_parent, S
     width(_width),
     currentObstacleId(0),
     isLoaded(false),
-    asphaltSkin(_asphaltSkin)
+    asphaltSkin(_asphaltSkin),
+    skyboxName("nebula")
 {
     if(name != "")
     {
@@ -114,6 +116,11 @@ QString Level::getSkyboxName()
     return skyboxName;
 }
 
+void Level::setAsphaltSkin(Skin *_asphaltSkin)
+{
+    asphaltSkin = _asphaltSkin;
+}
+
 void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
 {
     GLint id = ++currentObstacleId;
@@ -178,7 +185,6 @@ bool Level::load()
     width = levelElement.attribute("width", QString::number(LEVEL_WIDTH_DEFAULT)).toInt();
     length = levelElement.attribute("length", QString::number(LEVEL_LENGTH_DEFAULT)).toInt();
     gravity = levelElement.attribute("gravity", QString::number(LEVEL_GRAVITY_DEFAULT)).toInt();
-    skyboxName = levelElement.attribute("skybox", "nebula");
 
     QDomElement obstacleElement = levelElement.firstChildElement("obstacle");
 

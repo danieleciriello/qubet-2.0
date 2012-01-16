@@ -94,3 +94,7 @@ OTHER_FILES += \
    resources/sound/music/menu.wav \
    resources/levels/levels.xml \
    resources/icons/icons.xml
+
+
+
+

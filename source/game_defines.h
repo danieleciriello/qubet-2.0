@@ -35,7 +35,8 @@ enum { // Primary Actions
        EXIT_TO_MENU,
 
       // Secondary Actions
-      ROTATE_VOLUMECUBE
+      ROTATE_VOLUMECUBE,
+      UPDATE_STATS
      };
 
 #endif // GAME_DEFINES_H

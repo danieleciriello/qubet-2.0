@@ -50,6 +50,13 @@ public:
     ~Cube();
 
     /**
+     * @brief todo
+     *
+     * @param level
+     */
+    void initCube(Level *level);
+
+    /**
      * @brief Start the motion of the Cube;
      */
     void startCube();
@@ -115,29 +122,45 @@ public:
      */
     void updatePosition();
 
+    /**
+     * @brief todo
+     *
+     * @param offset
+     */
+    void tranlsateOnZ(GLfloat offset);
+
+    /**
+     * @brief
+     *
+     * @param _survivorMode
+     */
+    void setSurvivorMode(bool _survivorMode);
+
+
 
 private:
 
-    Skin *skin; /**< It is the Skin of the Cube. */
-    QObject *parent; /**< It is the Parent of the Cube. */
-    Vector3f *position; /**< It is the Cube's current position. */
-    unsigned char state; /**< It is the state of the cube. */
-    GLfloat speed; /**< It is the current speed of the Cube. */
-    GLfloat gravity; /**< It is the gravity variable. */
-    GLint levelCellsLength; /**< It is the number of cells of the Level's length. */
-    GLint levelCellsWidth; /**< It is the number of cells of the Level's width. */
-    GLfloat scaleFactor; /**< It is the scale factor. */
-    GLfloat jumpStartTime; /**< It is the time the Cube has started the jump. */
-    GLint jumpStep; /**< It is the parameter of the jump. */
-    GLint movingStep;  /**< It is the current moving step for to left and right. */
-    GLint explosionStep; /**< It is the current explosion step. */
-    GLint xCell; /**< It is the x cell the Cube is on. */
-    Vector3f* normalsMatrix[4][4][4]; /**< It is the 3-dimensional matrix that contain the nomrs vector of each sub-cube in case of explosion. */
-    Vector3f* anglesMatrix[4][4][4]; /**< It is the 3-dimensional matrix that contain the nomrs vector of each sub-cube in case of explosion. */
-    GLint startXCell; /**< It is the starting x cell. */
-    bool canMove; /**< States if the cube can move or not. */
-    QGLShaderProgram *explosionShader; /**< It is the explosion Shader. */
-    bool halfReachedSignaled;    /**< TODO */
+    Skin                        *skin;                  /**< It is the Skin of the Cube. */
+    QObject                     *parent;                /**< It is the Parent of the Cube. */
+    Vector3f                    *position;              /**< It is the Cube's current position. */
+    unsigned char               state;                  /**< It is the state of the cube. */
+    GLfloat                     speed;                  /**< It is the current speed of the Cube. */
+    GLfloat                     gravity;                /**< It is the gravity variable. */
+    GLint                       levelCellsLength;       /**< It is the number of cells of the Level's length. */
+    GLint                       levelCellsWidth;        /**< It is the number of cells of the Level's width. */
+    GLfloat                     scaleFactor;            /**< It is the scale factor. */
+    GLfloat                     jumpStartTime;          /**< It is the time the Cube has started the jump. */
+    GLint                       jumpStep;               /**< It is the parameter of the jump. */
+    GLint                       movingStep;             /**< It is the current moving step for to left and right. */
+    GLint                       explosionStep;          /**< It is the current explosion step. */
+    GLint                       xCell;                  /**< It is the x cell the Cube is on. */
+    Vector3f*                   normalsMatrix[4][4][4]; /**< It is the 3-dimensional matrix that contain the nomrs vector of each sub-cube in case of explosion. */
+    Vector3f*                   anglesMatrix[4][4][4];  /**< It is the 3-dimensional matrix that contain the nomrs vector of each sub-cube in case of explosion. */
+    GLint                       startXCell;             /**< It is the starting x cell. */
+    bool                        canMove;                /**< States if the cube can move or not. */
+    QGLShaderProgram            *explosionShader;       /**< It is the explosion Shader. */
+    bool                        halfReachedSignaled;    /**< TODO */
+    bool                        survivorMode;               /**< TODO */
 
     /**
      * @brief Generate the normalsMatrix Matrix.
@@ -163,12 +186,6 @@ private:
      * @brief Reset the Level.
      */
     void resetCube();
-
-    /**
-     * @brief todo
-     *
-     */
-    void halfReached();
 
 
 private slots:

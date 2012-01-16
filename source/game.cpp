@@ -21,7 +21,13 @@
 #include "game_defines.h"
 #include "effects_defines.h"
 
-Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, QMap<GLint,Level*> &_levelsList, QObject *_parent, bool _audioEnabled, QGLShaderProgram *_explosionShader) :
+Game::Game(QMap<GLint,GLuint> &_iconsList,
+           Alphabet *_alphabet,
+           Skin *_skin,
+           QMap<GLint,Level*> &_levelsList,
+           QObject *_parent,
+           bool _audioEnabled,
+           QGLShaderProgram *_explosionShader) :
     parent(_parent),
     iconsList(_iconsList),
     alphabet(_alphabet),
@@ -34,7 +40,14 @@ Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, QMa
     initGame();
 }
 
-Game::Game(QMap<GLint,GLuint> &_iconsList, Alphabet *_alphabet, Skin *_skin, Level *_level, QObject *_parent, bool _audioEnabled, QGLShaderProgram *_explosionShader, GLint _gameType) :
+Game::Game(QMap<GLint,GLuint> &_iconsList,
+           Alphabet *_alphabet,
+           Skin *_skin,
+           Level *_level,
+           QObject *_parent,
+           bool _audioEnabled,
+           QGLShaderProgram *_explosionShader,
+           GLint _gameType) :
     parent(_parent),
     iconsList(_iconsList),
     alphabet(_alphabet),
@@ -110,10 +123,15 @@ void Game::draw(GLboolean simplifyForPicking)
 
             case GO_TO_RESULTS_SCREEN:
                 if (cameraOffset->x < 60.0f)
+                {
                     cameraOffset->x += 2.0f;
+                }
                 else
+                {
                     if (waitCounter++ > 150)
                         currentActions->setPrimaryAction(EXIT_TO_MENU);
+                    isQuitting = true;
+                }
                 break;
 
             case EXIT_TO_MENU:
@@ -141,6 +159,14 @@ void Game::draw(GLboolean simplifyForPicking)
                     currentActions->removeSecondaryAction(ROTATE_VOLUMECUBE);
 
                 break;
+
+            case UPDATE_STATS:
+                if (cube->getPosition()->z >= 12.0f &&
+                   cube->getPosition()->z <= level->getLength() + 1.5f)
+                    if (difficulty < 1.0f)
+                    difficulty += 0.0001;
+                *elapsedTime = elapsedTime->addMSecs(30);
+                break;
             }
         }
     }
@@ -157,10 +183,19 @@ void Game::draw(GLboolean simplifyForPicking)
 
             if (!showingResult)
             {
-                glTranslatef(-9.0f, 0.0f, 0.0f);
-                deathCounter->draw(simplifyForPicking);
-
-                dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "deaths");
+                if (gameType != SURVIVOR_MODE)
+                {
+                    glTranslatef(-9.0f, 0.0f, 0.0f);
+                    deathCounter->draw(simplifyForPicking);
+                    dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "deaths");
+                }
+                else
+                {
+                    glTranslatef(-10.0f, 0.0f, 0.0f);
+                    dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "difficulty: " + QString::number(difficulty, 'f', 4));
+                    glTranslatef(0.0f, -1.5f, 0.0f);
+                    dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "time: " + elapsedTime->toString("hh") + ":" + elapsedTime->toString("mm") + ":" +elapsedTime->toString("ss"));
+                }
             }
 
             if (isPaused)
@@ -172,7 +207,7 @@ void Game::draw(GLboolean simplifyForPicking)
             }
 
         glPopMatrix();
-    }
+}
 
     glPushName(BUTTON_VOLUME);
     glPushMatrix();
@@ -187,57 +222,54 @@ void Game::draw(GLboolean simplifyForPicking)
     if (!simplifyForPicking)
     {
         glPushMatrix();
-
             glTranslatef(-cameraOffset->x, -cameraOffset->y, -cameraOffset->z);
 
             if ((currentActions->getPrimaryAction() == GO_TO_RESULTS_SCREEN) ||
                     ((currentActions->getPrimaryAction() == EXIT_TO_MENU) && !isQuitting))
             {
                 glPushMatrix();
-                    glTranslated(60.0f, 5.0f, 0.0f);
-                    resultsCubeString->draw(simplifyForPicking);
-                    glTranslated(0.0f, -5.0f, 15.0f);
-                    deathCounter->draw(simplifyForPicking);
-                    glTranslated(0.0f, -5.0f, -15.0f);
-                    adjectiveCubeString->draw(simplifyForPicking);
+                    glTranslated(60.0f, 8.0f, -4.0f);
+                    if (gameType != SURVIVOR_MODE)
+                    {
+                        resultsCubeString->draw(simplifyForPicking);
+                        glTranslated(0.0f, -5.0f, 15.0f);
+                        deathCounter->draw(simplifyForPicking);
+                        glTranslated(0.0f, -5.0f, -15.0f);
+                        adjectiveCubeString->draw(simplifyForPicking);
+                    }
+                    else
+                    {
+                        dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "difficulty: " + QString::number(difficulty, 'f', 4));
+                        glTranslatef(0.0f, -1.5f, 0.0f);
+                        dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "time: " + elapsedTime->toString("hh") + ":" + elapsedTime->toString("mm") + ":" +elapsedTime->toString("ss"));
+                    }
                 glPopMatrix();
             }
-
-            glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
-
-            if(swap)
-            {qDebug()<<"hff\n";
-                swap = false;
-                glTranslatef( 0.0f, 0.0f, level->getLength());
-                //cube->setPosition(new Vector3f(0.0f, levelOffset->y + 1.5f, 3.0f));
-            //aggiungere cube translatez
-            }
-
-            glPushMatrix();
-               glTranslatef(-(level->getWidth() / 2.0f) + 1.5f, levelOffset->y + 1.5f, -1.5f);
-               cube->draw(simplifyForPicking);
-            glPopMatrix();
-
-            glTranslatef(levelOffset->x, levelOffset->y, levelOffset->z + cube->getZ());
-
-            level->draw(simplifyForPicking);
-            if(next != NULL && gameType == SURVIVOR_MODE)
+            if(!isQuitting)
             {
+                glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
+
                 glPushMatrix();
-                glTranslatef( 0, 0, next->getLength() + levelOffset->z + cube->getZ());
-                    next->draw(simplifyForPicking);
+                   glTranslatef(-(level->getWidth() / 2.0f) + 1.5f, levelOffset->y + 1.5f, -1.5f);
+                   cube->draw(simplifyForPicking);
                 glPopMatrix();
-            }
 
-            glTranslatef(0.0f, 0.0f, -levelOffset->z - 6.0f);
-            drawPrism(level->getWidth(), LEVEL_HEIGHT, 12.0f, gridSkin);
+                glTranslatef(levelOffset->x, levelOffset->y, levelOffset->z + cube->getZ());
 
-            if (gameType != SURVIVOR_MODE)
-            {
+                level->draw(simplifyForPicking);
+                if (next != NULL && gameType == SURVIVOR_MODE)
+                {
+                    glPushMatrix();
+                    glTranslatef( 0, 0, -next->getLength() - 12.0f);
+                        next->draw(simplifyForPicking);
+                    glPopMatrix();
+                }
+
+                glTranslatef(0.0f, 0.0f, -levelOffset->z - 6.0f);
+                drawPrism(level->getWidth(), LEVEL_HEIGHT, 12.0f, gridSkin);
                 glTranslatef(0.0f, 0.0f, -level->getLength() - 12.0f);
                 drawPrism(level->getWidth(), LEVEL_HEIGHT, 12.0f, gridSkin);
             }
-
         glPopMatrix();
     }
 }
@@ -257,7 +289,6 @@ void Game::initGame()
 
     cube = NULL;
     positionController = NULL;
-
     angleRotVolumeCube = (audioEnabled ? 0.0f : 90.0f);
 
     GLuint volume_on  = iconsList.value(VOLUME_ON);
@@ -285,7 +316,8 @@ void Game::initGame()
     }
     else if (gameType == SURVIVOR_MODE)
     {
-
+        difficulty = 0;
+        elapsedTime = new QTime(0, 0);
     }
 }
 
@@ -322,6 +354,8 @@ void Game::countdown()
 
         emit hideLevelName();
         cube->startCube();
+        if (gameType == SURVIVOR_MODE)
+            currentActions->appendSecondaryAction(UPDATE_STATS);
         break;
 
     case 180:
@@ -383,6 +417,9 @@ void Game::playLevel()
 
     cube = new Cube(level, skin, this, explosionShader);
 
+    if (gameType == SURVIVOR_MODE)
+        cube->setSurvivorMode(true);
+
     if (positionController != NULL)
         positionController->~PositionController();
 
@@ -391,7 +428,7 @@ void Game::playLevel()
 
     introStep = 0;
 
-    cameraOffset = new Vector3f(-60.0, 0.0f, 4.0f);
+    cameraOffset = new Vector3f(-60.0, 3.0f, 0.0f);
     levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
 }
 
@@ -426,6 +463,9 @@ void Game::pauseGame()
     if (audioEnabled)
         emit enableAudio(false);
 
+    if (gameType == SURVIVOR_MODE)
+        currentActions->removeSecondaryAction(UPDATE_STATS);
+
     emit setMouseMovementTracking(MOUSE_MOVED_FULL);
 
     stateLabel->~CubeString();
@@ -437,9 +477,7 @@ void Game::continueGame()
     isPaused = false;
 
     if (introStep <= 130)
-    {
         continueCountdown();
-    }
     else
     {
     if (!isExploding)
@@ -454,6 +492,8 @@ void Game::continueGame()
     stateLabel = new CubeString("", 2.0f, alphabet, STATE_LABEL);
 
     currentActions->setPrimaryAction(DO_NOTHING);
+    if (gameType == SURVIVOR_MODE)
+        currentActions->appendSecondaryAction(UPDATE_STATS);
 
     cube->startCube();
     }
@@ -540,6 +580,8 @@ void Game::keyPressed(QKeyEvent *event)
         if (isPaused)
             continueGame();
         else
+            if (!(currentActions->getPrimaryAction() == GO_TO_RESULTS_SCREEN) ||
+                    ((currentActions->getPrimaryAction() == EXIT_TO_MENU) && !isQuitting))
             pauseGame();
         event->accept();
         break;
@@ -558,10 +600,18 @@ void Game::collided()
 void Game::exploded()
 {
     isExploding = true;
-    deaths++;
-    deathCounter->~CubeString();
-    deathCounter = new CubeString(QString::number(deaths), 1.5f, alphabet);
-    deathCounter->startStringRotation(10, 1);
+
+    if ( gameType != SURVIVOR_MODE)
+    {
+        deaths++;
+        deathCounter->~CubeString();
+        deathCounter = new CubeString(QString::number(deaths), 1.5f, alphabet);
+        deathCounter->startStringRotation(10, 1);
+    }
+    else
+    {
+        currentActions->removeSecondaryAction(UPDATE_STATS);
+    }
 }
 
 void Game::explosionFinished()
@@ -569,8 +619,8 @@ void Game::explosionFinished()
     if (gameType == SURVIVOR_MODE)
     {
         emit stopAmbientMusic();
-        playEffect(EFFECT_STAGECLEAR);
         createResultStrings();
+        isExploding = false;
     }
     else
     {
@@ -581,7 +631,8 @@ void Game::explosionFinished()
 
 void Game::levelCompleted()
 {
-    if(gameType != SURVIVOR_MODE)
+
+    if (gameType != SURVIVOR_MODE)
     {
         positionController->~PositionController();
         positionController = NULL;
@@ -601,7 +652,13 @@ void Game::levelCompleted()
     {
         level       = next;
         next        = NULL;
-        swap = true;
+
+        positionController->~PositionController();
+        positionController = new PositionController(cube, level, this);
+        positionController->startChecking();
+
+        cameraOffset->z = 0;
+        levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
     }
 }
 

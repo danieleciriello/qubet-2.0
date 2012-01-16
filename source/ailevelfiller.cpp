@@ -19,7 +19,7 @@ void AILevelFiller::createObstaclesList(Level *_level)
 
 void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 {
-    int levelLength     = (int)(level->getLength() / 3.0f);
+    int levelLength     = (int)(level->getLength() / 3.0f) - 1;
     if (_currentZ >= levelLength)
         return;
 
@@ -30,13 +30,11 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
     int zGap                = updateZGap();
     int nextObstacleZ       = currentTempZ + zGap + 1;
     int difficultyPercent   = (int)(difficulty * 100);
-    qDebug()<<"xgap: " + QString::number(zGap) + "\n";
     checkXState(currentTempX);
 
     if(difficulty <= 1.0f)
-        difficulty += 0.02f;
+        difficulty += 0.002f;
 
-    qDebug()<< difficulty;
     if(qrand() % 100 < difficultyPercent)
     {
         if( xState & X_STATE_LEFT_EDGE )
@@ -129,7 +127,8 @@ void AILevelFiller::checkXState(int currentX)
 
 void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ)
 {
-    Obstacle *obstacle = new Obstacle(1, new Vector3f(_currentTempX, _currentTempY, _currentTempZ ));
+    Obstacle *obstacle = new Obstacle(qrand() % 100 > (int)(difficulty * 100) ? 0 : 1,
+                                      new Vector3f(_currentTempX, _currentTempY, _currentTempZ ));
 
     QColor color(qrand() % 256, qrand() % 256, qrand() % 256, 255);
 
@@ -142,6 +141,4 @@ void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int
     obstacle->setColor(color);
 
     level->addObstacle(obstacle, false);
-
-    qDebug()<<"obstacle added";
 }

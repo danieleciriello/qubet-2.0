@@ -59,7 +59,6 @@ public:
      */
     bool isAudioEnabled();
 
-
 private:
 
     QObject *parent; /**< It is a callback variable to the parent of AudioManager. */

@@ -27,8 +27,12 @@ Cube::Cube(Level *level, Skin *_skin, QObject *_parent, QGLShaderProgram *_explo
     explosionShader(_explosionShader),
     halfReachedSignaled(false)
 {
-    canMove = false;
+    initCube(level);
+}
 
+void Cube::initCube(Level *level)
+{
+    canMove = false;
     startXCell = (int)(((level->getWidth() / 3) - 1) / 2);
     resetCube();
 
@@ -41,10 +45,9 @@ Cube::Cube(Level *level, Skin *_skin, QObject *_parent, QGLShaderProgram *_explo
     connect(this,   SIGNAL(suicide()),                    parent, SLOT(exploded()));
     connect(this,   SIGNAL(hideLevelName()),              parent, SLOT(hideLevelName()));
 
-    createNormalsMatrix();
-
     gravity = level->getGravity();
     gravity = -gravity + 24;
+    createNormalsMatrix();
 
     levelCellsLength = (int)(level->getLength() / 3.0f);
     levelCellsWidth = (int)(level->getWidth() / 3.0f);
@@ -168,19 +171,20 @@ void Cube::draw(GLboolean simplifyForPicking)
 
 void Cube::updatePosition()
 {
-    if (!canMove)
-        return;
-
     position->z += 0.9f;
-
     if (position->z >= levelCellsLength * 3.0f + 18.0f)
     {
         completed();
         return;
     }
-    if (position->z >= (levelCellsLength * 3.0f + 18.0f)/2.0f)
-        halfReached();
-
+    if(survivorMode)
+    {
+        if (position->z >= (levelCellsLength * 3.0f + 18.0f)/2.0f && !halfReachedSignaled)
+        {
+            emit halfLevelReached();
+            halfReachedSignaled = true;
+        }
+    }
     if (state & CUBESTATE_JUMPING)
     {
         if (jumpStep > 10.0f * gravity)
@@ -209,6 +213,16 @@ void Cube::updatePosition()
             movingStep++;
         }
     }
+}
+
+void Cube::tranlsateOnZ(GLfloat offset)
+{
+    position->z += offset;
+}
+
+void Cube::setSurvivorMode(bool _survivorMode)
+{
+    survivorMode = _survivorMode;
 }
 
 void Cube::createNormalsMatrix()
@@ -271,18 +285,12 @@ void Cube::explode()
 
 void Cube::completed()
 {
-    canMove = false;
+    if(survivorMode)
+        position->z = 6.0f;
+    else
+        canMove = false;
     emit levelCompleted();
-    halfReachedSignaled = true;
-}
-
-void Cube::halfReached()
-{
-    if(!halfReachedSignaled)
-    {
-        emit halfLevelReached();
-        halfReachedSignaled = true;
-    }
+    halfReachedSignaled = false;
 }
 
 void Cube::resetCube()

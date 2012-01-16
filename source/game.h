@@ -125,6 +125,8 @@ private:
     CubeString          *adjectiveCubeString;   /**< It is the adjective CubeStinr. */
     GLuint              waitCounter;            /**< It is the variable that sign the waiting time. */
     bool                swap;                    /**< TODO */
+    GLfloat             difficulty;              /**< TODO */
+    QTime               *elapsedTime;            /**< TODO */
 
     /**
      * @brief Initialize the game.

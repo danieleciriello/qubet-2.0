@@ -686,6 +686,7 @@ void Qubet::playSurvivor(GLint skinId)
 {
     aILevelFiller   = new AILevelFiller();
     temporaryLevel  = new Level();
+    temporaryLevel->setAsphaltSkin(asphaltSkin);
     temporaryLevel->setGravity(5.0f);
     aILevelFiller->createObstaclesList(temporaryLevel);
 
@@ -718,9 +719,9 @@ void Qubet::gameClosed()
 
 void Qubet::halfLevelReached()
 {
-    //loop livello
-    temporaryLevel      = new Level();
+    temporaryLevel = new Level();
     temporaryLevel->setGravity(5.0f);
+    temporaryLevel->setAsphaltSkin(asphaltSkin);
     aILevelFiller->createObstaclesList(temporaryLevel);
 
     game->setNextLevel(temporaryLevel);

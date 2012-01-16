@@ -143,6 +143,13 @@ public:
     QString getSkyboxName();
 
     /**
+     * @brief todo
+     *
+     * @param _asphaltSkin
+     */
+    void setAsphaltSkin(Skin *_asphaltSkin);
+
+    /**
      * @brief Adds an obstacle to the Level.
      *
      * @param _obstacle is the obstacle to add.
@@ -225,10 +232,10 @@ private:
     GLint length; /**< It is the Level length. */
     GLint width; /**< It is the Level width. */
     GLfloat gravity; /**< It is the Level gravity. */
-    QString skyboxName; /**< It is the name of the skybox to use. */
     GLint currentObstacleId; /**< It is the current Obstacle Id (used to generate new IDs). */
     bool isLoaded; /**< It is the variable that states if the level has already been fully loaded. */
     Skin *asphaltSkin; /**< It is the asphalt Skin. */
+    QString skyboxName; /**< It is the name of the skybox to use. */
 
 };
 
