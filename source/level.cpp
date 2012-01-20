@@ -149,25 +149,17 @@ void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
         obstaclesList.insert(id, _obstacle);
 
     #ifdef USE_DISPLAY_LISTS
-        obstaclesDisplayLists.append(createObstacleDisplayList(_obstacle));
-        _obstacle->setDisplayListID(obstaclesDisplayLists.size()-1);
+        if(!inTemp)
+        {
+            obstaclesDisplayLists.append(createObstacleDisplayList(_obstacle));
+            _obstacle->setDisplayListID(obstaclesDisplayLists.size());
+        }
     #endif
 }
 
 void Level::deleteObstacle(GLint _id)
 {
     QMap<GLint,Obstacle*>::iterator i = obstaclesList.find(_id);
-
-    #ifdef USE_DISPLAY_LISTS
-    int displayId = dynamic_cast<Obstacle*>(i.value())->getDisplayListID();
-    obstaclesDisplayLists.removeAt(displayId);
-    #endif
-
-    if (i != obstaclesList.end())
-    {
-        dynamic_cast<Obstacle*>(i.value())->~Obstacle();
-        obstaclesList.remove(_id);
-    }
 
     i = tempObstaclesList.find(_id);
 
@@ -259,7 +251,13 @@ bool Level::load()
 bool Level::save(bool *newlyCreated)
 {
     for (QMap<GLint,Obstacle*>::iterator i = tempObstaclesList.begin(); i != tempObstaclesList.end(); i++)
+    {
+        #ifdef USE_DISPLAY_LISTS
+            obstaclesDisplayLists.append(createObstacleDisplayList(dynamic_cast<Obstacle*>(i.value())));
+            dynamic_cast<Obstacle*>(i.value())->setDisplayListID(obstaclesDisplayLists.size());
+        #endif
         obstaclesList.insert(i.key(),i.value());
+    }
     tempObstaclesList.clear();
 
     QDomDocument document;
@@ -369,7 +367,6 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
 
         for(int i = 0; i < obstaclesDisplayLists.size(); i++)
                     glCallList(obstaclesDisplayLists.at(i));
-
         #else
 
         for (QMap<GLint,Obstacle*>::iterator i = obstaclesList.begin(); i != obstaclesList.end(); i++)
@@ -378,6 +375,7 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
             dynamic_cast<Obstacle*>(i.value())->draw(simplifyForPicking);
             glPopName();
         }
+        #endif
 
         for (QMap<GLint,Obstacle*>::iterator i = tempObstaclesList.begin(); i != tempObstaclesList.end(); i++)
         {
@@ -385,7 +383,6 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
             dynamic_cast<Obstacle*>(i.value())->draw(simplifyForPicking);
             glPopName();
         }
-        #endif
 
         glPopName();
     glPopMatrix();
@@ -399,6 +396,9 @@ GLint Level::getObstacleListCount()
 GLvoid Level::clearObstaclesList()
 {
     obstaclesList.clear();
+    #ifdef USE_DISPLAY_LISTS
+        obstaclesDisplayLists.clear();
+    #endif
     clearTempObstaclesList();
 }
 

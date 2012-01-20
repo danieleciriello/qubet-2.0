@@ -1,0 +1,4 @@
+<level width="9" gravity="4" length="450">
+    <obstacle x="1" y="0" model="3" z="12" id="2"/>
+    <obstacle x="0" y="0" model="3" z="1" id="3"/>
+</level>
