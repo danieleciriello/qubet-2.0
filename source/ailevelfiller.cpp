@@ -55,14 +55,14 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                 if(nextObstacleZ < levelLength)
 
-                    createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
+                    createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
 
                 addObstacles((++currentTempX), currentTempY, nextObstacleZ);
             }
         }
         else if( xState & X_STATE_RIGHT_EDGE )
         {
-            for (int i = levelWidth -2; i >= 0; i--)
+            for (int i = 0;i < levelWidth -2; i++)
 
                 for (int j = currentTempZ; j < nextObstacleZ; j++)
 
@@ -72,7 +72,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
             if(nextObstacleZ < levelLength)
 
-                createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
+                createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
 
             addObstacles((--currentTempX), currentTempY, nextObstacleZ);
         }
@@ -96,7 +96,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
             if(nextObstacleZ < levelLength)
 
-                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
+                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1), true);
 
             qrand() % 100 < 50 ? addObstacles((++currentTempX), currentTempY, nextObstacleZ):
                                  addObstacles((--currentTempX), currentTempY, nextObstacleZ);
@@ -125,12 +125,15 @@ void AILevelFiller::checkXState(int currentX)
         xState = xState & ~X_STATE_RIGHT_EDGE;
 }
 
-void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ)
+void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ, bool _red)
 {
     Obstacle *obstacle = new Obstacle(qrand() % 100 > (int)(difficulty * 100) ? 0 : 1,
                                       new Vector3f(_currentTempX, _currentTempY, _currentTempZ ));
 
-    QColor color(qrand() % 256, qrand() % 256, qrand() % 256, 255);
+    QColor color(0,255,0);
+    if (_red == true)
+        //QColor color(qrand() % 256, qrand() % 256, qrand() % 256, 255);
+        color.setRed(255);
 
     if (color.lightness() < 100)
         color = color.lighter();
