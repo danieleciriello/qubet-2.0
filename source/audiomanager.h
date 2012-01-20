@@ -61,11 +61,11 @@ public:
 
 private:
 
-    QObject *parent; /**< It is a callback variable to the parent of AudioManager. */
-    QString currentFileName; /**< It is the current ambientMusic filename. */
-    bool audioEnabled; /**< It is the variable that states if the audio is currently enabled or not. */
-    Phonon::MediaObject *ambientMusic; /**< It is the Phonon::MediaObject of the current ambient music. */
-    QMap<QString,Phonon::MediaObject*> effectsList; /**< It is the QMap of effects and their filename. */
+    QObject                             *parent;            /**< It is a callback variable to the parent of AudioManager. */
+    QString                             currentFileName;    /**< It is the current ambientMusic filename. */
+    bool                                audioEnabled;       /**< It is the variable that states if the audio is currently enabled or not. */
+    Phonon::MediaObject                 *ambientMusic;      /**< It is the Phonon::MediaObject of the current ambient music. */
+    QMap<QString,Phonon::MediaObject*>  effectsList;        /**< It is the QMap of effects and their filename. */
 
     /**
      * @brief It is the reimplementation of QThread's run() method. It is empty because

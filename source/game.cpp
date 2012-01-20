@@ -21,13 +21,13 @@
 #include "game_defines.h"
 #include "effects_defines.h"
 
-Game::Game(QMap<GLint,GLuint> &_iconsList,
-           Alphabet *_alphabet,
-           Skin *_skin,
-           QMap<GLint,Level*> &_levelsList,
-           QObject *_parent,
-           bool _audioEnabled,
-           QGLShaderProgram *_explosionShader) :
+Game::Game(QMap<GLint,GLuint>   &_iconsList,
+           Alphabet             *_alphabet,
+           Skin                 *_skin,
+           QMap<GLint,Level*>   &_levelsList,
+           QObject              *_parent,
+           bool                 _audioEnabled,
+           QGLShaderProgram     *_explosionShader) :
     parent(_parent),
     iconsList(_iconsList),
     alphabet(_alphabet),
@@ -40,14 +40,14 @@ Game::Game(QMap<GLint,GLuint> &_iconsList,
     initGame();
 }
 
-Game::Game(QMap<GLint,GLuint> &_iconsList,
-           Alphabet *_alphabet,
-           Skin *_skin,
-           Level *_level,
-           QObject *_parent,
-           bool _audioEnabled,
-           QGLShaderProgram *_explosionShader,
-           GLint _gameType) :
+Game::Game(QMap<GLint,GLuint>   &_iconsList,
+           Alphabet             *_alphabet,
+           Skin                 *_skin,
+           Level                *_level,
+           QObject              *_parent,
+           bool                 _audioEnabled,
+           QGLShaderProgram     *_explosionShader,
+           GLint                _gameType) :
     parent(_parent),
     iconsList(_iconsList),
     alphabet(_alphabet),

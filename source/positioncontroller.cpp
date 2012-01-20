@@ -29,7 +29,7 @@ PositionController::PositionController(Cube *_cube, Level *_level, QObject *_par
     levelLength = level->getLength();
     levelWidth = level->getWidth();
 
-    createObstacleCells();
+    obstacleCells = level->getObstacleCells();
 
     checkPositionTimer = new QTimer(this);
     connect(checkPositionTimer, SIGNAL(timeout()), this, SLOT(checkCollision()));
@@ -131,68 +131,4 @@ bool PositionController::isInteger(float f)
 {
     int i = f;
     return (f - static_cast<float>(i) < 0.02);
-}
-
-void PositionController::createObstacleCells()
-{
-    int xMax = (int)(level->getWidth()  / 3) + 2;
-    int yMax = 5;
-    int zMax = (int)(level->getLength() / 3) + 5;
-
-    obstacleCells.resize(xMax);
-
-    for (int x = 0; x < xMax; x++)
-    {
-        obstacleCells[x].resize(yMax);
-
-        for (int y = 0; y < yMax; y++)
-        {
-            obstacleCells[x][y].resize(zMax);
-
-            for (int z = 0; z < zMax; z++)
-            {
-                obstacleCells[x][y][z] = false;
-            }
-        }
-    }
-
-    QMap<GLint,Obstacle*> obstacles = level->getObstaclesList();
-
-    for (QMap<GLint,Obstacle*>::iterator i = obstacles.begin(); i != obstacles.end(); i++)
-    {
-        Obstacle *obstacle = dynamic_cast<Obstacle*>(i.value());
-        Vector3f *cell = obstacle->getCell();
-
-        obstacleCells[cell->x][cell->y][cell->z] = true;
-
-        switch (obstacle->getModelId())
-        {
-        case OBSTACLE_I:
-            obstacleCells[cell->x]    [cell->y + 1][cell->z]     = true;
-            break;
-
-        case OBSTACLE_L:
-            obstacleCells[cell->x + 1][cell->y]    [cell->z]     = true;
-            obstacleCells[cell->x + 1][cell->y + 1][cell->z]     = true;
-            break;
-
-        case OBSTACLE_CUBE_BIG:
-            obstacleCells[cell->x]    [cell->y + 1][cell->z]     = true;
-
-            obstacleCells[cell->x + 1][cell->y]    [cell->z]     = true;
-            obstacleCells[cell->x + 1][cell->y + 1][cell->z]     = true;
-
-            obstacleCells[cell->x]    [cell->y]    [cell->z + 1] = true;
-            obstacleCells[cell->x]    [cell->y + 1][cell->z + 1] = true;
-
-            obstacleCells[cell->x + 1][cell->y]    [cell->z + 1] = true;
-            obstacleCells[cell->x + 1][cell->y + 1][cell->z + 1] = true;
-            break;
-        }
-    }
-}
-
-void PositionController::setObstacleCells(QVector<QVector<QVector<bool> > > _obstacleCells)
-{
-    obstacleCells = _obstacleCells;
 }

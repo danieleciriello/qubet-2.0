@@ -48,7 +48,7 @@ CubeString::CubeString(QString _label, GLfloat _maxWidth, GLfloat _maxHeight, Al
 
 CubeString::~CubeString()
 {
-#ifdef USE_DISPLAY_LISTS_FOR_LETTERS
+#ifdef USE_DISPLAY_LISTS
 
     for (int i = 0; i < letterDisplayLists.count(); i++)
         if (letterDisplayLists.at(i) != 0)
@@ -95,7 +95,7 @@ GLvoid CubeString::draw(GLboolean simplifyForPicking)
 
                 glRotatef(currentAngles[i], 1.0, 0.0, 0.0);
 
-#ifdef USE_DISPLAY_LISTS_FOR_LETTERS
+#ifdef USE_DISPLAY_LISTS
 
                 if (letterDisplayLists[i] != 0)
                     glCallList(letterDisplayLists[i]);
@@ -203,7 +203,7 @@ GLvoid CubeString::init()
         currentAngles.append(0);
         finalAngles.append(0);
 
-#ifdef USE_DISPLAY_LISTS_FOR_LETTERS
+#ifdef USE_DISPLAY_LISTS
 
         if (label[i] == ' ')
             letterDisplayLists.append(0);

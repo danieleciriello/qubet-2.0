@@ -176,15 +176,15 @@ private:
     QList<GLint> currentAngles;  /**< It is a list to save the current angle of each letter. */
     QList<GLint> finalAngles; /**< It is a list to save the final angle of each letter. */
 
-#ifdef USE_DISPLAY_LISTS_FOR_LETTERS
+//#ifdef USE_DISPLAY_LISTS
 
     QList<GLuint> letterDisplayLists;  /**< It is a list to save the Display List ID of each letter. */
 
-#else
+//#else
 
     QList<Skin*> letterSkins; /**< It is a list to save the skin of each letter. */
 
-#endif
+//#endif
 
     /**
      * @brief It is an internal function to create the OpenGL displayList of a letter.

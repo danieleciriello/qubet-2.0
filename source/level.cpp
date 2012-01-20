@@ -52,6 +52,13 @@ Level::Level(QString _name, GLfloat _length, GLfloat _width, QObject *_parent, S
 
 Level::~Level()
 {
+#ifdef USE_DISPLAY_LISTS
+
+    for (int i = 0; i < obstaclesDisplayLists.count(); i++)
+        if (obstaclesDisplayLists.at(i) != 0)
+            glDeleteLists(obstaclesDisplayLists.at(i), 1);
+
+#endif
     for (QMap<GLint,Obstacle*>::iterator i = obstaclesList.begin(); i != obstaclesList.end(); i++)
     {
         if (i.value() != NULL)
@@ -121,6 +128,17 @@ void Level::setAsphaltSkin(Skin *_asphaltSkin)
     asphaltSkin = _asphaltSkin;
 }
 
+GLuint Level::createObstacleDisplayList(Obstacle *_obstacle)
+{
+    GLuint list = glGenLists(1);
+    glNewList(list, GL_COMPILE);
+        glPushName(_obstacle->getId());
+            _obstacle->draw(false);
+        glPopName();
+    glEndList();
+    return list;
+}
+
 void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
 {
     GLint id = ++currentObstacleId;
@@ -129,11 +147,21 @@ void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
         tempObstaclesList.insert(id, _obstacle);
     else
         obstaclesList.insert(id, _obstacle);
+
+    #ifdef USE_DISPLAY_LISTS
+        obstaclesDisplayLists.append(createObstacleDisplayList(_obstacle));
+        _obstacle->setDisplayListID(obstaclesDisplayLists.size()-1);
+    #endif
 }
 
 void Level::deleteObstacle(GLint _id)
 {
     QMap<GLint,Obstacle*>::iterator i = obstaclesList.find(_id);
+
+    #ifdef USE_DISPLAY_LISTS
+    int displayId = dynamic_cast<Obstacle*>(i.value())->getDisplayListID();
+    obstaclesDisplayLists.removeAt(displayId);
+    #endif
 
     if (i != obstaclesList.end())
     {
@@ -217,6 +245,10 @@ bool Level::load()
         obstacle->setType(1);
 
         obstaclesList.insert(obstacleId, obstacle);
+        #ifdef USE_DISPLAY_LISTS
+            obstaclesDisplayLists.append(createObstacleDisplayList(obstacle));
+            obstacle->setDisplayListID(obstaclesDisplayLists.size()-1);
+        #endif
         obstacleElement = obstacleElement.nextSiblingElement("obstacle");
     }
 
@@ -333,6 +365,13 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
         glTranslatef(-(width / 2.0f), (LEVEL_HEIGHT / 2.0f), (length / 2.0f));
         glPushName(OBSTACLES);
 
+        #ifdef USE_DISPLAY_LISTS
+
+        for(int i = 0; i < obstaclesDisplayLists.size(); i++)
+                    glCallList(obstaclesDisplayLists.at(i));
+
+        #else
+
         for (QMap<GLint,Obstacle*>::iterator i = obstaclesList.begin(); i != obstaclesList.end(); i++)
         {
             glPushName(i.key());
@@ -346,6 +385,7 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
             dynamic_cast<Obstacle*>(i.value())->draw(simplifyForPicking);
             glPopName();
         }
+        #endif
 
         glPopName();
     glPopMatrix();
@@ -365,4 +405,67 @@ GLvoid Level::clearObstaclesList()
 GLvoid Level::clearTempObstaclesList()
 {
     tempObstaclesList.clear();
+}
+
+void Level::createObstacleCells()
+{
+    int xMax = (int)(width / 3) + 2;
+    int yMax = 5;
+    int zMax = (int)(length / 3) + 5;
+
+    obstacleCells.resize(xMax);
+
+    for (int x = 0; x < xMax; x++)
+    {
+        obstacleCells[x].resize(yMax);
+
+        for (int y = 0; y < yMax; y++)
+        {
+            obstacleCells[x][y].resize(zMax);
+
+            for (int z = 0; z < zMax; z++)
+            {
+                obstacleCells[x][y][z] = false;
+            }
+        }
+    }
+
+    for (QMap<GLint,Obstacle*>::iterator i = obstaclesList.begin(); i != obstaclesList.end(); i++)
+    {
+        Obstacle *obstacle = dynamic_cast<Obstacle*>(i.value());
+        Vector3f *cell = obstacle->getCell();
+
+        obstacleCells[cell->x][cell->y][cell->z] = true;
+
+        switch (obstacle->getModelId())
+        {
+        case OBSTACLE_I:
+            obstacleCells[cell->x]    [cell->y + 1][cell->z]     = true;
+            break;
+
+        case OBSTACLE_L:
+            obstacleCells[cell->x + 1][cell->y]    [cell->z]     = true;
+            obstacleCells[cell->x + 1][cell->y + 1][cell->z]     = true;
+            break;
+
+        case OBSTACLE_CUBE_BIG:
+            obstacleCells[cell->x]    [cell->y + 1][cell->z]     = true;
+
+            obstacleCells[cell->x + 1][cell->y]    [cell->z]     = true;
+            obstacleCells[cell->x + 1][cell->y + 1][cell->z]     = true;
+
+            obstacleCells[cell->x]    [cell->y]    [cell->z + 1] = true;
+            obstacleCells[cell->x]    [cell->y + 1][cell->z + 1] = true;
+
+            obstacleCells[cell->x + 1][cell->y]    [cell->z + 1] = true;
+            obstacleCells[cell->x + 1][cell->y + 1][cell->z + 1] = true;
+            break;
+        }
+    }
+}
+
+QVector<QVector<QVector<bool> > > Level::getObstacleCells()
+{
+    createObstacleCells();
+    return obstacleCells;
 }

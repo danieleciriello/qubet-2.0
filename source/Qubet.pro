@@ -35,7 +35,7 @@ QT += phonon
 TARGET = Qubet
 TEMPLATE = app
 
-DEFINES += USE_DISPLAY_LISTS_FOR_LETTERS
+DEFINES += USE_DISPLAY_LISTS
 
 CONFIG(debug, debug|release) { DEFINES += _DEBUG }
 
@@ -59,7 +59,8 @@ SOURCES += \
     cubestringlist.cpp \
     skybox.cpp \
     level.cpp \
-    ailevelfiller.cpp
+    ailevelfiller.cpp \
+    pathfindinggraph.cpp
 
 HEADERS  += \
     vector3f.h \
@@ -87,13 +88,20 @@ HEADERS  += \
     effects_defines.h \
     skybox.h \
     cube_defines.h \
-    ailevelfiller.h
+    ailevelfiller.h \
+    pathfindinggraph.h
 
 OTHER_FILES += \
    resources/skins/skins.xml \
    resources/sound/music/menu.wav \
    resources/levels/levels.xml \
    resources/icons/icons.xml
+
+
+
+
+
+
 
 
 

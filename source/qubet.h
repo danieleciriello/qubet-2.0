@@ -71,6 +71,7 @@
 #include "audiomanager.h"
 #include "leveleditor.h"
 #include "ailevelfiller.h"
+#include "pathfindinggraph.h"
 
 /**
  * @brief This class rapresents an instance of the QGLWidget Qubet.

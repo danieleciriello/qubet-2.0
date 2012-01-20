@@ -26,7 +26,7 @@ Obstacle::Obstacle(GLint _modelId, Vector3f *_cell) :
 }
 
 Obstacle::~Obstacle()
-{ }
+{}
 
 GLvoid Obstacle::draw(GLboolean simplifyForPicking)
 {
@@ -101,4 +101,14 @@ GLvoid Obstacle::setType(GLint _type)
 GLint Obstacle::getType()
 {
     return type;
+}
+
+GLvoid Obstacle::setDisplayListID(GLuint _displayListID)
+{
+    displayListID = _displayListID;
+}
+
+GLuint Obstacle::getDisplayListID()
+{
+    return displayListID;
 }

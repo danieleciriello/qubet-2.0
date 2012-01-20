@@ -6,7 +6,7 @@
 
 #define Y_MAX 6
 #define Z_GAP_MAX 10
-#define Z_GAP_MIN 4
+#define Z_GAP_MIN 5
 
 #define X_STATE_LEFT_EDGE               0x01
 #define X_STATE_RIGHT_EDGE              0x02

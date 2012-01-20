@@ -74,13 +74,14 @@ public:
 
 private:
 
-    QObject *parent; /**< It is the parent of the PositionController. */
-    Cube *cube; /**< It is the pointer to the Cube Object. */
-    Level *level; /**< Is the pointer to the Level Object. */
-    GLint levelLength; /**< It is the length of the Level. */
-    GLint levelWidth; /**< It is the width of the Level. */
-    QTimer *checkPositionTimer; /**< QTimer controlling the checkCollision() calls. */
-    QVector<QVector<QVector<bool> > > obstacleCells; /**< It is the 3d matrix rappresent obstacle cells */
+    QObject                             *parent;                /**< It is the parent of the PositionController. */
+    Cube                                *cube;                  /**< It is the pointer to the Cube Object. */
+    Level                               *level;                 /**< Is the pointer to the Level Object. */
+    GLint                               levelLength;            /**< It is the length of the Level. */
+    GLint                               levelWidth;             /**< It is the width of the Level. */
+    QTimer                              *checkPositionTimer;    /**< QTimer controlling the checkCollision() calls. */
+    QVector<QVector<QVector<bool> > >   obstacleCells;          /**< It is the 3d matrix rappresent obstacle cells */
+
 
     /**
      * @brief Returns the cell coordinates from absolute position.

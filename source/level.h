@@ -220,23 +220,48 @@ public:
     */
     GLvoid clearTempObstaclesList();
 
+    /**
+     * @brief return obstacleCells
+     *
+     * @return QVector<QVector<QVector<bool> > > obstacleCells
+     */
+    QVector<QVector<QVector<bool> > > getObstacleCells();
+
 
 private:
+    QObject                             *parent;            /**< It is the parent of Level. */
+    QString                             filename;           /**< It is the Level xml description filename. */
+    QString                             name;               /**< It is the Level name. */
+    bool                                isInStory;          /**< It is the variable that states if the Level is in the story. */
+    QMap<GLint,Obstacle*>               obstaclesList;      /**< It is the Level List of obstacles. */
+    QMap<GLint,Obstacle*>               tempObstaclesList;  /**< It is the Level List of obstacles. */
+    GLint                               length;             /**< It is the Level length. */
+    GLint                               width;              /**< It is the Level width. */
+    GLfloat                             gravity;            /**< It is the Level gravity. */
+    GLint                               currentObstacleId;  /**< It is the current Obstacle Id (used to generate new IDs). */
+    bool                                isLoaded;           /**< It is the variable that states if the level has already been fully loaded. */
+    Skin                                *asphaltSkin;       /**< It is the asphalt Skin. */
+    QString                             skyboxName;         /**< It is the name of the skybox to use. */
+    QVector<QVector<QVector<bool> > >   obstacleCells;      /**< It is the 3d matrix rappresent obstacle cells */
 
-    QObject *parent; /**< It is the parent of Level. */
-    QString filename; /**< It is the Level xml description filename. */
-    QString name; /**< It is the Level name. */
-    bool isInStory; /**< It is the variable that states if the Level is in the story. */
-    QMap<GLint,Obstacle*> obstaclesList; /**< It is the Level List of obstacles. */
-    QMap<GLint,Obstacle*> tempObstaclesList; /**< It is the Level List of obstacles. */
-    GLint length; /**< It is the Level length. */
-    GLint width; /**< It is the Level width. */
-    GLfloat gravity; /**< It is the Level gravity. */
-    GLint currentObstacleId; /**< It is the current Obstacle Id (used to generate new IDs). */
-    bool isLoaded; /**< It is the variable that states if the level has already been fully loaded. */
-    Skin *asphaltSkin; /**< It is the asphalt Skin. */
-    QString skyboxName; /**< It is the name of the skybox to use. */
+    #ifdef USE_DISPLAY_LISTS
+    QList<GLuint>                       obstaclesDisplayLists; /**< It is a list to save the Display List ID of each letter. */
+    #endif
 
+    /**
+     * @brief Create the 3D Matrix of ObstacleCells.
+     *
+     * @return GLvoid
+     */
+    GLvoid createObstacleCells();
+
+    /**
+     * @brief It is an internal function to create the OpenGL displayList of an Obstacle.
+     *
+     * @param obstacle is the Obstacle you want to create a displayList for.
+     * @return GLuint the displayList ID
+     */
+    GLuint createObstacleDisplayList(Obstacle* obstacle);
 };
 
 #endif // LEVEL_H
