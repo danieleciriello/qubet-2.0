@@ -195,6 +195,9 @@ void Game::draw(GLboolean simplifyForPicking)
                     dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "difficulty: " + QString::number(difficulty, 'f', 4));
                     glTranslatef(0.0f, -1.5f, 0.0f);
                     dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "time: " + elapsedTime->toString("hh") + ":" + elapsedTime->toString("mm") + ":" +elapsedTime->toString("ss"));
+                    glTranslatef(0.0f, -1.5f, 0.0f);
+                    dynamic_cast<QGLWidget*>(parent)->renderText(-1.0f, -1.5f, 0.0f, "position: " + QString::number(cube->getZ()));
+
                 }
             }
 
@@ -245,7 +248,7 @@ void Game::draw(GLboolean simplifyForPicking)
                     }
                 glPopMatrix();
             }
-            if(!isQuitting)
+            if (!isQuitting)
             {
                 glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
 
@@ -355,7 +358,10 @@ void Game::countdown()
         emit hideLevelName();
         cube->startCube();
         if (gameType == SURVIVOR_MODE)
+        {
+            aICubeMover->controlCube();
             currentActions->appendSecondaryAction(UPDATE_STATS);
+        }
         break;
 
     case 180:
@@ -418,7 +424,10 @@ void Game::playLevel()
     cube = new Cube(level, skin, this, explosionShader);
 
     if (gameType == SURVIVOR_MODE)
+    {
+        aICubeMover = new AICubeMover(cube, level, this);
         cube->setSurvivorMode(true);
+    }
 
     if (positionController != NULL)
         positionController->~PositionController();
@@ -480,22 +489,25 @@ void Game::continueGame()
         continueCountdown();
     else
     {
-    if (!isExploding)
-        positionController->startChecking();
+        if (!isExploding)
+            positionController->startChecking();
 
-    if (audioEnabled)
-        emit enableAudio(true);
+        if (audioEnabled)
+            emit enableAudio(true);
 
-    emit setMouseMovementTracking(MOUSE_MOVED_NONE);
+        emit setMouseMovementTracking(MOUSE_MOVED_NONE);
 
-    stateLabel->~CubeString();
-    stateLabel = new CubeString("", 2.0f, alphabet, STATE_LABEL);
+        stateLabel->~CubeString();
+        stateLabel = new CubeString("", 2.0f, alphabet, STATE_LABEL);
 
-    currentActions->setPrimaryAction(DO_NOTHING);
-    if (gameType == SURVIVOR_MODE)
-        currentActions->appendSecondaryAction(UPDATE_STATS);
+        currentActions->setPrimaryAction(DO_NOTHING);
 
-    cube->startCube();
+        cube->startCube();
+        if (gameType == SURVIVOR_MODE)
+        {
+            aICubeMover->controlCube();
+            currentActions->appendSecondaryAction(UPDATE_STATS);
+        }
     }
 }
 
@@ -655,10 +667,12 @@ void Game::levelCompleted()
 
         positionController->~PositionController();
         positionController = new PositionController(cube, level, this);
+        aICubeMover->~QThread();
+        aICubeMover = new AICubeMover(cube, level, this);
         positionController->startChecking();
-
         cameraOffset->z = 0;
         levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
+                aICubeMover->controlCube();
     }
 }
 

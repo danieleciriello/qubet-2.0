@@ -12,7 +12,7 @@ void AILevelFiller::createObstaclesList(Level *_level)
     level = _level;
     int currentX            = (int)(((level->getWidth() / 3.0f) - 1) / 2);
     int currentY            = 0;
-    int currentZ            = 0;
+    int currentZ            = 7;
 
     addObstacles(currentX, currentY, currentZ);
 }
@@ -32,14 +32,14 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
     int difficultyPercent   = (int)(difficulty * 100);
     checkXState(currentTempX);
 
-    if(difficulty <= 1.0f)
-        difficulty += 0.002f;
+    if (difficulty <= 1.0f)
+        difficulty += 0.02f;
 
-    if(qrand() % 100 < difficultyPercent)
+    if (qrand() % 100 < difficultyPercent)
     {
-        if( xState & X_STATE_LEFT_EDGE )
+        if ( xState & X_STATE_LEFT_EDGE )
         {
-            if( xState & X_STATE_RIGHT_EDGE )
+            if ( xState & X_STATE_RIGHT_EDGE )
             {
                 addObstacles(currentTempX, currentTempY, nextObstacleZ);
             }
@@ -49,18 +49,18 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                     for (int j = currentTempZ; j < nextObstacleZ; j++)
 
-                        if((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+                        if ((qrand() % 100 < difficultyPercent) && (j <= levelLength))
 
                             createAndAddObstacle(i, currentTempY, j);
 
-                if(nextObstacleZ < levelLength)
+                if (nextObstacleZ < levelLength)
 
                     createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
 
                 addObstacles((++currentTempX), currentTempY, nextObstacleZ);
             }
         }
-        else if( xState & X_STATE_RIGHT_EDGE )
+        else if ( xState & X_STATE_RIGHT_EDGE )
         {
             for (int i = 0;i < levelWidth -2; i++)
 
@@ -70,7 +70,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                         createAndAddObstacle(i, currentTempY, j);
 
-            if(nextObstacleZ < levelLength)
+            if (nextObstacleZ < levelLength)
 
                 createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
 
@@ -82,7 +82,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                 for (int j = currentTempZ; j < nextObstacleZ; j++)
 
-                    if((qrand() % 100 < difficultyPercent) && (j <= levelLength))
+                    if ((qrand() % 100 < difficultyPercent) && (j <= levelLength))
 
                         createAndAddObstacle(i, currentTempY, j);
 
@@ -94,7 +94,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                         createAndAddObstacle(i, currentTempY, j);
 
-            if(nextObstacleZ < levelLength)
+            if (nextObstacleZ < levelLength)
 
                 createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1), true);
 

@@ -56,7 +56,10 @@ PositionController::~PositionController()
     parent->disconnect(this);
 
     if (checkPositionTimer != NULL)
+    {
         stopChecking();
+        checkPositionTimer->~QTimer();
+    }
 }
 
 void PositionController::startChecking()

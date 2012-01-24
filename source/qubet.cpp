@@ -723,7 +723,6 @@ void Qubet::halfLevelReached()
     temporaryLevel->setGravity(5.0f);
     temporaryLevel->setAsphaltSkin(asphaltSkin);
     aILevelFiller->createObstaclesList(temporaryLevel);
-
     game->setNextLevel(temporaryLevel);
 }
 

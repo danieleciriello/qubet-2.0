@@ -22,7 +22,7 @@
 #include "obstacle.h"
 #include "skybox.h"
 
-#define STANDARD_LENGHT 450.0f
+#define STANDARD_LENGHT 300.0f
 #define STANDARD_WIDTH  15.0f
 
 /**

@@ -60,7 +60,8 @@ SOURCES += \
     skybox.cpp \
     level.cpp \
     ailevelfiller.cpp \
-    pathfindinggraph.cpp
+    pathfindinggraph.cpp \
+    aicubemover.cpp
 
 HEADERS  += \
     vector3f.h \
@@ -89,13 +90,16 @@ HEADERS  += \
     skybox.h \
     cube_defines.h \
     ailevelfiller.h \
-    pathfindinggraph.h
+    pathfindinggraph.h \
+    aicubemover.h
 
 OTHER_FILES += \
    resources/skins/skins.xml \
    resources/sound/music/menu.wav \
    resources/levels/levels.xml \
    resources/icons/icons.xml
+
+
 
 
 

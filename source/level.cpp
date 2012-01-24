@@ -43,7 +43,7 @@ Level::Level(QString _name, GLfloat _length, GLfloat _width, QObject *_parent, S
     asphaltSkin(_asphaltSkin),
     skyboxName("nebula")
 {
-    if(name != "")
+    if (name != "")
     {
         filename = name + ".xml";
         filename.replace(" ", "_");
@@ -143,13 +143,13 @@ void Level::addObstacle(Obstacle *_obstacle, bool inTemp)
 {
     GLint id = ++currentObstacleId;
     _obstacle->setId(id);
-    if(inTemp)
+    if (inTemp)
         tempObstaclesList.insert(id, _obstacle);
     else
         obstaclesList.insert(id, _obstacle);
 
     #ifdef USE_DISPLAY_LISTS
-        if(!inTemp)
+        if (!inTemp)
         {
             obstaclesDisplayLists.append(createObstacleDisplayList(_obstacle));
             _obstacle->setDisplayListID(obstaclesDisplayLists.size());
@@ -365,7 +365,7 @@ GLvoid Level::draw(GLboolean simplifyForPicking)
 
         #ifdef USE_DISPLAY_LISTS
 
-        for(int i = 0; i < obstaclesDisplayLists.size(); i++)
+        for (int i = 0; i < obstaclesDisplayLists.size(); i++)
                     glCallList(obstaclesDisplayLists.at(i));
         #else
 

@@ -6,7 +6,7 @@
 
 #define Y_MAX 6
 #define Z_GAP_MAX 10
-#define Z_GAP_MIN 5
+#define Z_GAP_MIN 6
 
 #define X_STATE_LEFT_EDGE               0x01
 #define X_STATE_RIGHT_EDGE              0x02
@@ -37,7 +37,7 @@ private:
 
     Level                               *level;         /**< TODO */
     float                               difficulty;     /**< TODO */
-    int                                 xState;         /**< TODO */
+    unsigned char                       xState;         /**< TODO */
 
     /**
      * @brief todo

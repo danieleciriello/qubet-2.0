@@ -8,8 +8,4 @@
     <level story_number="7" name="tunnel" filename="tunnel.xml"/>
     <level story_number="8" name="warning" filename="warning.xml"/>
     <level story_number="9" name="not so easy" filename="not_so_easy.xml"/>
-    <level name="three lanes" filename="3lanes.xml"/>
-    <level name="liy" filename="liy.xml"/>
-    <level name="khjb" filename="khjb.xml"/>
-    <level name="hh" filename="hh.xml"/>
 </levels>

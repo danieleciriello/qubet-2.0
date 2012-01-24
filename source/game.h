@@ -23,6 +23,7 @@
 #include "actionlist.h"
 #include "cubestring.h"
 #include "defines.h"
+#include "aicubemover.h"
 
 /**
  * @brief It is the Game Class.
@@ -127,6 +128,7 @@ private:
     bool                swap;                    /**< TODO */
     GLfloat             difficulty;              /**< TODO */
     QTime               *elapsedTime;            /**< TODO */
+    AICubeMover         *aICubeMover;           /**< TODO */
 
     /**
      * @brief Initialize the game.

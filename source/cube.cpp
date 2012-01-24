@@ -177,7 +177,7 @@ void Cube::updatePosition()
         completed();
         return;
     }
-    if(survivorMode)
+    if (survivorMode)
     {
         if (position->z >= (levelCellsLength * 3.0f + 18.0f)/2.0f && !halfReachedSignaled)
         {
@@ -285,7 +285,7 @@ void Cube::explode()
 
 void Cube::completed()
 {
-    if(survivorMode)
+    if (survivorMode)
         position->z = 6.0f;
     else
         canMove = false;
@@ -309,7 +309,6 @@ void Cube::collided()
 {
     playEffect(EFFECT_EXPLOSION);
     playEffect(EFFECT_HAHA);
-
     explode();
     createNormalsMatrix();
 }

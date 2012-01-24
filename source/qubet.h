@@ -71,7 +71,7 @@
 #include "audiomanager.h"
 #include "leveleditor.h"
 #include "ailevelfiller.h"
-#include "pathfindinggraph.h"
+#include "aicubemover.h"
 
 /**
  * @brief This class rapresents an instance of the QGLWidget Qubet.
@@ -200,6 +200,7 @@ private:
     GLint                   currentNewLevelNumber;  /**< It is the current level value. */
 
     AILevelFiller           *aILevelFiller;         /**< TODO */
+    AICubeMover             *aICubeMover; /**< TODO */
 
     // Initialization
 
