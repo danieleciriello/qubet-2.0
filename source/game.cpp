@@ -322,6 +322,7 @@ void Game::initGame()
         difficulty = 0;
         elapsedTime = new QTime(0, 0);
     }
+    autoplay = false;
 }
 
 void Game::countdown()
@@ -359,7 +360,8 @@ void Game::countdown()
         cube->startCube();
         if (gameType == SURVIVOR_MODE)
         {
-            aICubeMover->controlCube();
+            if(autoplay)
+                aICubeMover->controlCube();
             currentActions->appendSecondaryAction(UPDATE_STATS);
         }
         break;
@@ -425,7 +427,8 @@ void Game::playLevel()
 
     if (gameType == SURVIVOR_MODE)
     {
-        aICubeMover = new AICubeMover(cube, level, this);
+        if(autoplay)
+            aICubeMover = new AICubeMover(cube, level, this);
         cube->setSurvivorMode(true);
     }
 
@@ -505,7 +508,8 @@ void Game::continueGame()
         cube->startCube();
         if (gameType == SURVIVOR_MODE)
         {
-            aICubeMover->controlCube();
+            if(autoplay)
+                aICubeMover->controlCube();
             currentActions->appendSecondaryAction(UPDATE_STATS);
         }
     }
@@ -667,12 +671,15 @@ void Game::levelCompleted()
 
         positionController->~PositionController();
         positionController = new PositionController(cube, level, this);
-        aICubeMover->~QThread();
-        aICubeMover = new AICubeMover(cube, level, this);
         positionController->startChecking();
         cameraOffset->z = 0;
         levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
-                aICubeMover->controlCube();
+        if (autoplay)
+        {
+            aICubeMover->~QThread();
+            aICubeMover = new AICubeMover(cube, level, this);
+            aICubeMover->controlCube();
+        }
     }
 }
 

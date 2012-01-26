@@ -68,7 +68,7 @@ private:
     * @param _currentTempY
     * @param _currentTempZ
     */
-    void createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ, bool red = false);
+    void createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ);
 
 signals:
 

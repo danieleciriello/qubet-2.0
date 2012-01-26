@@ -55,7 +55,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
                 if (nextObstacleZ < levelLength)
 
-                    createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
+                    createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
 
                 addObstacles((++currentTempX), currentTempY, nextObstacleZ);
             }
@@ -72,7 +72,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
             if (nextObstacleZ < levelLength)
 
-                createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ, true);
+                createAndAddObstacle(currentTempX, currentTempY, nextObstacleZ);
 
             addObstacles((--currentTempX), currentTempY, nextObstacleZ);
         }
@@ -96,7 +96,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
 
             if (nextObstacleZ < levelLength)
 
-                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1), true);
+                createAndAddObstacle(currentTempX, currentTempY, (currentTempZ + zGap +1));
 
             qrand() % 100 < 50 ? addObstacles((++currentTempX), currentTempY, nextObstacleZ):
                                  addObstacles((--currentTempX), currentTempY, nextObstacleZ);
@@ -125,15 +125,12 @@ void AILevelFiller::checkXState(int currentX)
         xState = xState & ~X_STATE_RIGHT_EDGE;
 }
 
-void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ, bool _red)
+void AILevelFiller::createAndAddObstacle(int _currentTempX,int _currentTempY,int _currentTempZ)
 {
     Obstacle *obstacle = new Obstacle(qrand() % 100 > (int)(difficulty * 100) ? 0 : 1,
                                       new Vector3f(_currentTempX, _currentTempY, _currentTempZ ));
 
-    QColor color(0,255,0);
-    if (_red == true)
-        //QColor color(qrand() % 256, qrand() % 256, qrand() % 256, 255);
-        color.setRed(255);
+    QColor color(qrand() % 256, qrand() % 256, qrand() % 256, 255);
 
     if (color.lightness() < 100)
         color = color.lighter();

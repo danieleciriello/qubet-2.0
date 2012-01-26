@@ -131,7 +131,6 @@ void PathfindingGraph::appendConnectionIfNotExist(float _cost, Node *_fromNode, 
 void PathfindingGraph::findPath(bool aStarAlgorithm)
 {
     double_t minimumNextNodeDistance;
-    double_t totalCost = 0;
 
     gettimeofday(&timerStart, NULL);
     QFile file("stats");
@@ -220,7 +219,6 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
             else
             {
                 iterator = iterator->getBeforeNode();
-                qDebug()<<"H";
             }
 
         }

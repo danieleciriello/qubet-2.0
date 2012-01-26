@@ -129,6 +129,7 @@ private:
     GLfloat             difficulty;              /**< TODO */
     QTime               *elapsedTime;            /**< TODO */
     AICubeMover         *aICubeMover;           /**< TODO */
+    bool                autoplay;               /**< TODO */
 
     /**
      * @brief Initialize the game.
