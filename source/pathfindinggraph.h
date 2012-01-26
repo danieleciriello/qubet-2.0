@@ -130,6 +130,7 @@ public:
         zPosition(_zPosition),
         state(0),
         costSoFar(MAX_VALUE),
+        cost(0),
         shortestPathBeforeNode(NULL)
     {}
 
@@ -178,9 +179,16 @@ public:
         return costSoFar;
     }
 
-    void setBeforeNode(Node * _shortestPathBeforeNode)
+    void setBeforeNode(Node * _shortestPathBeforeNode, int _cost = 0)
     {
         shortestPathBeforeNode = _shortestPathBeforeNode;
+        if(_cost != 0)
+            cost = _cost;
+    }
+
+    int getCost()
+    {
+        return cost;
     }
 
     Node *getBeforeNode()
@@ -200,6 +208,7 @@ private:
     int             zPosition;    /**< TODO */
     unsigned char   state;
     int             costSoFar;
+    int             cost;
     Node*           shortestPathBeforeNode;
 };
 
@@ -382,6 +391,12 @@ private:
      *
      */
     void createPathStack();
+
+    /**
+     * @brief
+     *
+     */
+    void resetStates();
 };
 
 #endif // LEVELGRAPH_H

@@ -11,6 +11,7 @@ PathfindingGraph::PathfindingGraph(Level *_level, int xPos):
     nodes.insert( head->getId(),head);
 
     createGraph(head);
+    resetStates();
     findPath(true);
 }
 
@@ -131,7 +132,6 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
 {
     double_t minimumNextNodeDistance;
     double_t totalCost = 0;
-    double_t cost = 0;
 
     gettimeofday(&timerStart, NULL);
     QFile file("stats");
@@ -140,6 +140,7 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
     Node *iterator2 = nodes[0];
 
     bool goalFound = false;
+    bool nodeFound = false;
     goal = NULL;
 
     if (!aStarAlgorithm)
@@ -186,18 +187,19 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
     {
         while (!goalFound)
         {
+            nodeFound = false;
             minimumNextNodeDistance = INFINITY;
             for (int i = 0; i < connections.count() && goalFound == false; i++)
             {
-                if (connections.at(i)->getFromNode() == iterator)
+                if (connections.at(i)->getFromNode() == iterator && !(connections.at(i)->getToNode()->getState() & NODE_STATE_CHECKED))
                 {
                     if(connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1)) +
                             connections.at(i)->getCost() < minimumNextNodeDistance)
                     {
                         minimumNextNodeDistance = connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1)) + connections.at(i)->getCost();
-                        connections.at(i)->getToNode()->setBeforeNode(iterator);
-                        iterator2 = nodes[(connections.at(i)->getToNode()->getId())];
-                        cost = connections.at(i)->getCost();
+                        connections.at(i)->getToNode()->setBeforeNode(iterator, connections.at(i)->getCost());
+                        iterator2 = connections.at(i)->getToNode();
+                        nodeFound = true;
                     }
                     if(QString::number(connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1))) == "0" ||
                             iterator2->getZPosition() >= (level->getLength() / 3.0f )-2 )
@@ -208,9 +210,19 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
                     }
 
                 }
+
             }
-            iterator = iterator2;
-            totalCost += cost;
+            iterator->setState(NODE_STATE_CHECKED);
+            if(nodeFound)
+            {
+                iterator = iterator2;
+            }
+            else
+            {
+                iterator = iterator->getBeforeNode();
+                qDebug()<<"H";
+            }
+
         }
         gettimeofday(&timerStop, NULL);
         elapsedTime += (timerStop.tv_usec - timerStart.tv_usec);
@@ -241,4 +253,13 @@ Node *PathfindingGraph::pop()
 bool PathfindingGraph::isTheGoal(Node *node)
 {
     return node->getId() == goal->getId();
+}
+
+void PathfindingGraph::resetStates()
+{
+    for(QMap<unsigned int,Node*>::iterator i = nodes.begin(); i != nodes.end(); i++)
+    {
+        if (i.value() != NULL)
+            dynamic_cast<Node*>(i.value())->unSetState(NODE_STATE_CHECKED);
+    }
 }
