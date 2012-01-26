@@ -10,11 +10,8 @@ PathfindingGraph::PathfindingGraph(Level *_level, int xPos):
     head->setBeforeNode(NULL);
     nodes.insert( head->getId(),head);
 
-    goal = head;
-
     createGraph(head);
-    findPath();
-    createPathStack();
+    findPath(true);
 }
 
 PathfindingGraph::~PathfindingGraph()
@@ -132,8 +129,22 @@ void PathfindingGraph::appendConnectionIfNotExist(float _cost, Node *_fromNode, 
 
 void PathfindingGraph::findPath(bool aStarAlgorithm)
 {
+    double_t minimumNextNodeDistance;
+    double_t totalCost = 0;
+    double_t cost = 0;
+
+    gettimeofday(&timerStart, NULL);
+    QFile file("stats");
+
+    Node *iterator = nodes[0];
+    Node *iterator2 = nodes[0];
+
+    bool goalFound = false;
+    goal = NULL;
+
     if (!aStarAlgorithm)
     {
+        gettimeofday(&timerStart, NULL);
         for (QMap<unsigned int,Node*>::iterator j = nodes.begin(); j != nodes.end(); j++)
         {
             for (int i = 0; i < connections.count(); i++)
@@ -150,13 +161,64 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
                         connections.at(i)->getToNode()->setCostSoFar(connections.at(i)->getFromNode()->getCostSoFar() + connections.at(i)->getCost());
                         connections.at(i)->getToNode()->setBeforeNode(connections.at(i)->getFromNode());
                     }
-                    if (connections.at(i)->getToNode()->getZPosition() > goal->getZPosition())
+                    if (connections.at(i)->getToNode()->getZPosition() > ((int)(level->getLength() / 3.0f) -3) && connections.at(i)->getToNode()->getXPosition() == head->getXPosition())
                     {
                         goal = connections.at(i)->getToNode();
-                    qDebug()<<(connections.at(i)->getToNode()->getZPosition());
                     }
                 }
             }
+        }
+        if (!goal)
+        {
+            qDebug()<<"Warning! algorithm bug!!! goal not found!";
+        }
+        createPathStack();
+        gettimeofday(&timerStop, NULL);
+        elapsedTime += (timerStop.tv_usec - timerStart.tv_usec);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+        {
+            QTextStream in(&file);
+            in<<QString::number(elapsedTime)<<"\t";
+            file.close();
+        }
+    }
+    else
+    {
+        while (!goalFound)
+        {
+            minimumNextNodeDistance = INFINITY;
+            for (int i = 0; i < connections.count() && goalFound == false; i++)
+            {
+                if (connections.at(i)->getFromNode() == iterator)
+                {
+                    if(connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1)) +
+                            connections.at(i)->getCost() < minimumNextNodeDistance)
+                    {
+                        minimumNextNodeDistance = connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1)) + connections.at(i)->getCost();
+                        connections.at(i)->getToNode()->setBeforeNode(iterator);
+                        iterator2 = nodes[(connections.at(i)->getToNode()->getId())];
+                        cost = connections.at(i)->getCost();
+                    }
+                    if(QString::number(connections.at(i)->getToNode()->getDistance(head->getXPosition(), ((int)(level->getLength() / 3.0f) -1))) == "0" ||
+                            iterator2->getZPosition() >= (level->getLength() / 3.0f )-2 )
+                    {
+                        goal = connections.at(i)->getToNode();
+                        goalFound = true;
+                        createPathStack();
+                    }
+
+                }
+            }
+            iterator = iterator2;
+            totalCost += cost;
+        }
+        gettimeofday(&timerStop, NULL);
+        elapsedTime += (timerStop.tv_usec - timerStart.tv_usec);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+        {
+            QTextStream in(&file);
+            in<<QString::number(elapsedTime)<<"\n";
+            file.close();
         }
     }
 }

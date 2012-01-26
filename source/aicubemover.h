@@ -20,13 +20,6 @@ public:
      */
     explicit AICubeMover(Cube *_cube, Level *_level, QObject *_parent = 0);
 
-
-    /**
-     * @brief todo
-     *
-     */
-    //~AICubeMover();
-
     /**
      * @brief todo
      *

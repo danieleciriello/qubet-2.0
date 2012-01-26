@@ -28,18 +28,15 @@ void AICubeMover::continueControl()
             ((cube->getPosition()->z / 3.0f) -3)  >= tempNode->getZPosition())
     {
         tempNode = pathfindingGraph->pop();
-        qDebug()<<tempNode->getZPosition()<<tempNode->getXPosition();
 
         if(tempNode->getXPosition() < (int)(round(cube->getPosition()->x / 3.0f)))
         {
             cube->moveLeft();
-            qDebug()<<"cube->moveLeft()";
         }
 
         else if(tempNode->getXPosition() > (int)(round(cube->getPosition()->x / 3.0f)))
         {
             cube->moveRight();
-            qDebug()<<"cube->moveRight()";
         }
     }
     if(cube->getZ() < level->getLength() - 3 )

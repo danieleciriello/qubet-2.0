@@ -2,3 +2,9 @@ Release/
 source/.hg/
 *.DS_Store
 Debug/
+callgrind.out.32073
+
+stats
+
+source/Qubet.pro.user
+

@@ -3,6 +3,9 @@
 
 #include "QVector"
 #include "level.h"
+#include "QFile"
+#include <sys/time.h>                // for gettimeofday()
+using namespace std;
 
 #define MAX_VALUE           65535
 #define NODE_STATE_LEFT     0x01
@@ -185,6 +188,11 @@ public:
         return shortestPathBeforeNode;
     }
 
+    double_t getDistance(double_t _x, double_t _z)
+    {
+        return ((double_t)(sqrt(pow((_x - (double_t)xPosition), 2.0) + pow(_z - (double_t)zPosition, 2.0))));
+    }
+
 private:
     unsigned int    id;         /**< TODO */
     int             xPosition;    /**< TODO */
@@ -333,6 +341,11 @@ private:
     QMap<unsigned int, Node*>           nodes;          /**< TODO */
     QVector<Connection*>                connections;    /**< TODO */
     QStack<Node*>                       pathStack;      /**< TODO */
+    timeval                             timerStart; /**< TODO */
+    timeval                             timerStop; /**< TODO */
+    double elapsedTime; /**< TODO */
+    QFile                               file;          /**< TODO */
+
 
     /**
      * @brief todo
