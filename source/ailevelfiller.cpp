@@ -33,7 +33,7 @@ void AILevelFiller::addObstacles(int _currentX,int _currentY,int _currentZ)
     checkXState(currentTempX);
 
     if (difficulty <= 1.0f)
-        difficulty += 0.002f;
+        difficulty += 0.02f;
 
     if (qrand() % 100 < difficultyPercent)
     {

@@ -321,7 +321,7 @@ void Game::initGame()
     {
         difficulty = 0;
         elapsedTime = new QTime(0, 0);
-        autoplay = false;
+        autoplay = true;
     }
 }
 

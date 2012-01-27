@@ -30,15 +30,10 @@ void AICubeMover::continueControl()
         tempNode = pathfindingGraph->pop();
 
         if(tempNode->getXPosition() < (int)(round(cube->getPosition()->x / 3.0f)))
-        {
             cube->moveLeft();
-        }
-
         else if(tempNode->getXPosition() > (int)(round(cube->getPosition()->x / 3.0f)))
-        {
             cube->moveRight();
-        }
     }
     if(cube->getZ() < level->getLength() - 3 )
-    cubeControllingTimer->start(30);
+        cubeControllingTimer->start(30);
 }

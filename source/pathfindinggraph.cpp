@@ -236,7 +236,7 @@ void PathfindingGraph::findPath(bool aStarAlgorithm)
 void PathfindingGraph::createPathStack()
 {
     tempNode = goal;
-    while(tempNode->getBeforeNode() != NULL)
+    while(tempNode != head)
     {
         pathStack.push(tempNode);
         tempNode = tempNode->getBeforeNode();
