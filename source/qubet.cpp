@@ -497,8 +497,12 @@ GLboolean Qubet::loadLevels()
 {
     QDomDocument document("levels");
     QFile file("resources/levels/levels.xml");
+
+
     if (!file.open(QIODevice::ReadOnly))
+    {
         return false;
+    }
 
     if (!document.setContent(&file))
     {

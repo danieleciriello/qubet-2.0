@@ -38,6 +38,7 @@ TEMPLATE = app
 DEFINES += USE_DISPLAY_LISTS
 
 CONFIG(debug, debug|release) { DEFINES += _DEBUG }
+CONFIG-=app_bundle
 
 SOURCES += \
     main.cpp\

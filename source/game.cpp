@@ -321,7 +321,7 @@ void Game::initGame()
     {
         difficulty = 0;
         elapsedTime = new QTime(0, 0);
-        autoplay = true;
+        autoplay = false;
     }
 }
 
@@ -424,7 +424,7 @@ void Game::playLevel()
         cube->~Cube();
 
     cube = new Cube(level, skin, this, explosionShader);
-
+    cube->setSurvivorMode(false);
     if (gameType == SURVIVOR_MODE)
     {
         if(autoplay)
@@ -676,7 +676,7 @@ void Game::levelCompleted()
         levelOffset  = new Vector3f(0.0f, -4.0f, -(level->getLength() / 2.0f) - 12.0f);
         if (autoplay)
         {
-            aICubeMover->~QThread();
+
             aICubeMover = new AICubeMover(cube, level, this);
             aICubeMover->controlCube();
         }
