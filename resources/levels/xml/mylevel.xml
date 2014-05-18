@@ -1,0 +1,13 @@
+<level width="9" gravity="6" length="486">
+    <obstacle x="2" y="0" model="0" z="22" id="1"/>
+    <obstacle x="1" y="0" model="2" z="39" id="2"/>
+    <obstacle x="1" y="0" model="3" z="8" id="3"/>
+    <obstacle x="1" y="0" model="3" z="18" id="4"/>
+    <obstacle x="0" y="0" model="1" z="25" id="5"/>
+    <obstacle x="1" y="0" model="0" z="26" id="6"/>
+    <obstacle x="0" y="0" model="3" z="30" id="7"/>
+    <obstacle x="1" y="0" model="1" z="45" id="8"/>
+    <obstacle x="0" y="0" model="1" z="51" id="9"/>
+    <obstacle x="1" y="0" model="2" z="76" id="10"/>
+    <obstacle x="0" y="0" model="1" z="77" id="11"/>
+</level>
